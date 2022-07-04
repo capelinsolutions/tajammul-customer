@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="91.239" height="91.232" viewBox="0 0 91.239 91.232">
+  <g id="Group_16564" data-name="Group 16564" transform="translate(-1571 924)">
+    <g id="Group_16527" data-name="Group 16527" transform="translate(-311.186 -95.369)">
+      <circle id="Ellipse_635" data-name="Ellipse 635" cx="45.616" cy="45.616" r="45.616" transform="translate(1882.186 -828.631)" fill="#273b60"/>
+      <g id="Group_12416" data-name="Group 12416" transform="translate(1889.362 -821.948)">
+        <path id="Path_29933" data-name="Path 29933" d="M598.065,283.006a45.623,45.623,0,0,1-62.3,63.45,45.619,45.619,0,1,0,62.3-63.45Z" transform="translate(-535.76 -283.006)" fill="#1c2e51"/>
+      </g>
+      <g id="Group_12417" data-name="Group 12417" transform="translate(1885.233 -825.262)">
+        <path id="Path_29934" data-name="Path 29934" d="M515.9,311.593a42.351,42.351,0,0,1,75.923-25.817,42.354,42.354,0,1,0-70.3,46.925,42.158,42.158,0,0,1-5.623-21.108Z" transform="translate(-512.746 -264.533)" fill="#38568e"/>
+      </g>
+    </g>
+    <g id="Group_16563" data-name="Group 16563" transform="translate(-178.487 179.088)">
+      <path id="Path_31629" data-name="Path 31629" d="M117.5,26.5a20.945,20.945,0,0,0-6.567,1.056,9.3,9.3,0,0,1,1.1,1.114A19.578,19.578,0,1,1,98.794,41.6a9.274,9.274,0,0,1-1.086-1.121A21,21,0,1,0,117.5,26.5Z" transform="translate(1677.988 -1105.374)" fill="#fff" fill-rule="evenodd"/>
+      <path id="Path_31630" data-name="Path 31630" d="M326.837,116.65v11.537a2.049,2.049,0,1,0,2.448,2.5h11.346v-1.013H329.286a2.051,2.051,0,0,0-1.521-1.489v-11.53h-.856c-.025,0-.048-.006-.072-.007Z" transform="translate(1468.186 -1188.056)" fill="#fff"/>
+      <path id="Path_31631" data-name="Path 31631" d="M109.265,23.922a7.643,7.643,0,1,0,7.643,7.643,7.643,7.643,0,0,0-7.643-7.643Zm0,.935a6.7,6.7,0,1,1-4.745,1.962,6.708,6.708,0,0,1,4.745-1.962Zm0,.339a6.368,6.368,0,1,0,4.5,1.865,6.368,6.368,0,0,0-4.5-1.865Zm-1.274,2.018h2.548v5.972h-2.548Zm0,6.8h2.548v1.9h-2.548Z" transform="translate(1673.289 -1103.01)" fill="#fff" fill-rule="evenodd"/>
+    </g>
+  </g>
+</svg>

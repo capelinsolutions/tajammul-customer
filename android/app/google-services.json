@@ -1,0 +1,118 @@
+{
+  "project_info": {
+    "project_number": "798143339426",
+    "project_id": "tajammul-app",
+    "storage_bucket": "tajammul-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:798143339426:android:cb50a382031674f57d30fb",
+        "android_client_info": {
+          "package_name": "com.tajammul_business_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "798143339426-2dhmh38ie6okod5a5ms5qgo8o00712v1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tajammul_business_app",
+            "certificate_hash": "b2a369855c6039704840f1636ddd777a16cd37b3"
+          }
+        },
+        {
+          "client_id": "798143339426-o8emlh1ghfdr5c7p61j6b82nkiulfnfd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjeuQF4QehPK4DWeEsKNEbpirfsUbevYA"
+        },
+        {
+          "current_key": "AIzaSyAYPoQYMBQdrhpLSwQpCv0m_IvKsv3jLMk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "798143339426-o8emlh1ghfdr5c7p61j6b82nkiulfnfd.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "798143339426-t69o4pdoe9ocguebf83q6b6sqf3f9hg1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.tajammul.tajammulMerchantApp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:798143339426:android:cebb6aa69c0d051b7d30fb",
+        "android_client_info": {
+          "package_name": "com.tajammul_customer_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "798143339426-olikbddckeuvq4gsuraqvpkoqj15l2k8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tajammul_customer_app",
+            "certificate_hash": "90468aca8c1d92e055d730593384ae9b2c555df9",
+            "client_id": "798143339426-7bsq8kcjkj7rbs96fctd2dv9s4gt20ae.apps.googleusercontent.com",
+            "client_type": 1,
+            "android_info": {
+              "package_name": "com.tajammul_customer_app",
+              "certificate_hash": "d61a258bae929cb27a1a53f595f5626fda0d4e4c"
+            }
+          }
+        },
+        {
+          "client_id": "798143339426-jqnpa8ccqa8lonvi0nr81gclhpjdg3ha.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tajammul_customer_app",
+            "certificate_hash": "192153e0f4434d32b20688a6eadee5cb3bc6151b"
+          }
+        },
+        {
+          "client_id": "798143339426-o8emlh1ghfdr5c7p61j6b82nkiulfnfd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjeuQF4QehPK4DWeEsKNEbpirfsUbevYA"
+        },
+        {
+          "current_key": "AIzaSyAYPoQYMBQdrhpLSwQpCv0m_IvKsv3jLMk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "798143339426-o8emlh1ghfdr5c7p61j6b82nkiulfnfd.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "798143339426-t69o4pdoe9ocguebf83q6b6sqf3f9hg1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.tajammul.tajammulMerchantApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

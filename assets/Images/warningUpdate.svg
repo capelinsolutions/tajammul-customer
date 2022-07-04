@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="91.231" height="91.231" viewBox="0 0 91.231 91.231">
+  <g id="Group_16568" data-name="Group 16568" transform="translate(1065.536 -5138.575)">
+    <g id="Group_16535" data-name="Group 16535" transform="translate(-1210 4834.68)">
+      <g id="Group_16532" data-name="Group 16532" transform="translate(504.08 -4970)">
+        <g id="Group_16527" data-name="Group 16527" transform="translate(-2241.801 6102.525)">
+          <circle id="Ellipse_635" data-name="Ellipse 635" cx="45.616" cy="45.616" r="45.616" transform="translate(1882.186 -828.631)" fill="#273b60"/>
+          <g id="Group_12416" data-name="Group 12416" transform="translate(1889.362 -821.948)">
+            <path id="Path_29933" data-name="Path 29933" d="M598.065,283.006a45.623,45.623,0,0,1-62.3,63.45,45.619,45.619,0,1,0,62.3-63.45Z" transform="translate(-535.76 -283.006)" fill="#1c2e51"/>
+          </g>
+          <g id="Group_12417" data-name="Group 12417" transform="translate(1885.233 -825.262)">
+            <path id="Path_29934" data-name="Path 29934" d="M515.9,311.593a42.351,42.351,0,0,1,75.923-25.817,42.354,42.354,0,1,0-70.3,46.925A42.158,42.158,0,0,1,515.9,311.593Z" transform="translate(-512.746 -264.533)" fill="#38568e"/>
+          </g>
+        </g>
+      </g>
+      <text id="_" data-name="!" transform="translate(192 372)" fill="#fff" font-size="61" font-family="Poppins-SemiBold, Poppins" font-weight="600"><tspan x="-10.797" y="0">!</tspan></text>
+    </g>
+  </g>
+</svg>

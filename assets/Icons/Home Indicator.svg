@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="121" height="4" viewBox="0 0 121 4">
+  <defs>
+    <radialGradient id="radial-gradient" cx="0.549" cy="0" r="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#d7dde3"/>
+      <stop offset="1" stop-color="#fff"/>
+    </radialGradient>
+  </defs>
+  <g id="Home_Indicator" data-name="Home Indicator" transform="translate(-0.094 -0.246)">
+    <rect id="Home_Indicator-2" data-name="Home Indicator" width="121" height="4" rx="2" transform="translate(0.094 0.246)" fill="url(#radial-gradient)"/>
+  </g>
+</svg>
