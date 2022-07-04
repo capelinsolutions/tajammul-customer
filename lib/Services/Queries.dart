@@ -15,8 +15,8 @@ class Queries {
 
   //create user query
   static String createUser = """
-  mutation createUser(\$userData: UserInput){
-       createUser(input: \$userData){
+  mutation createUser(\$UserInput: UserInput){
+       createUser(input: \$UserInput){
     data {
     userId
     }

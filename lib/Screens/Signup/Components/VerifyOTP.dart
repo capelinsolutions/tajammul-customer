@@ -149,7 +149,6 @@ class _VerifyOTPState extends State<VerifyOTP> {
     setState(() {
       processing = false;
     });
-
   }
 
   @override

@@ -76,7 +76,6 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
 
   //check which business user is login
   checkUser() async {
-
     _usernameController.text = user?.userName ?? "";
     _emailController.text = user?.email ?? "";
     _firstNameController.text = user?.name?.firstName ?? "";
@@ -464,7 +463,6 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                                                             _imagePath=null;
                                                             items.removeAt(1);
                                                           }
-
                                                         });
                                                       }
                                                     },

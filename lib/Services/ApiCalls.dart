@@ -360,9 +360,8 @@ class ApiCalls {
             document: gql(
                 Queries.createUser),
             variables: {
-              'userData': data,
+              'UserInput': data,
             }
-          //pollInterval: Duration(milliseconds: 100)
         ),
       );
       if (result.hasException) {

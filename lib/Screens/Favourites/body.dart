@@ -303,7 +303,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                                                           break;
                                                         }
                                                       }
-                                                      if (data.product!.status == STATUS_PRODUCT_AVAILABLE) {
+                                                      if (data.product!.status != STATUS_PRODUCT_UNAVAILABLE) {
                                                         if (!isFound) {
                                                           if ((data.product!.quantity)! > 0) {
                                                             CartProduct cartProduct = CartProduct(
@@ -322,8 +322,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                                                                 "Product is out of stock");
                                                           }
                                                         } else {
-                                                          if (quantity! <=
-                                                              (data.product!.quantity)!) {
+                                                          if (quantity! <= (data.product!.quantity)!) {
                                                             HiveProduct? hp = items.getAt(0);
                                                             HiveServices.addQuantity(cartItemIndex!, items);
                                                             HiveServices.addCategory((hp?.currentCategory)!, items);

@@ -377,10 +377,8 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                                                 }
                                               },
                                               remove: () {
-                                                HiveProduct? hp =
-                                                    items.getAt(0);
-                                                if ((hp!.cartData?.length)! >
-                                                    1) {
+                                                HiveProduct? hp = items.getAt(0);
+                                                if ((hp!.cartData?.length)! > 1) {
                                                   String? category;
                                                   hp.categoryProduct
                                                       ?.forEach((key, value) {
@@ -463,14 +461,10 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                                                 }
                                               },
                                               add: () {
-                                                HiveProduct? hp =
-                                                    items.getAt(0);
-                                                if ((hp!.cartData?[index]
-                                                        .quantity)! <
-                                                    (hp.cartData?[index]
-                                                        .updatedStock)!) {
-                                                  HiveServices.addQuantity(
-                                                      index, items);
+                                                HiveProduct? hp = items.getAt(0);
+                                                if ((hp!.cartData?[index].quantity)! <
+                                                    (hp.cartData?[index].updatedStock)!) {
+                                                  HiveServices.addQuantity(index, items);
                                                 } else {
                                                   displaySnackMessage(
                                                       "You can't add more ");

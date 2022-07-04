@@ -22,24 +22,24 @@ import '../../../main.dart';
 class Body extends StatefulWidget {
   final Product? product;
   final Business? business;
-  const Body({Key? key, this.product,this.business}) : super(key: key);
+  const Body({Key? key, this.product, this.business}) : super(key: key);
 
   @override
   State<Body> createState() => _BodyState();
 }
 
-class _BodyState extends State<Body> with TickerProviderStateMixin{
+class _BodyState extends State<Body> with TickerProviderStateMixin {
   List<InfoComponents> slider = [
     InfoComponents(
         image:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROA8QBdELzSJmUg1PRD27NKEgUhZ6xc4RJCLOgUMfE7RvyyjLC__390ooRa4BF8ZLS6CQ&usqp=CAU"),
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROA8QBdELzSJmUg1PRD27NKEgUhZ6xc4RJCLOgUMfE7RvyyjLC__390ooRa4BF8ZLS6CQ&usqp=CAU"),
     InfoComponents(
       image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROA8QBdELzSJmUg1PRD27NKEgUhZ6xc4RJCLOgUMfE7RvyyjLC__390ooRa4BF8ZLS6CQ&usqp=CAU",
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROA8QBdELzSJmUg1PRD27NKEgUhZ6xc4RJCLOgUMfE7RvyyjLC__390ooRa4BF8ZLS6CQ&usqp=CAU",
     ),
     InfoComponents(
         image:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROA8QBdELzSJmUg1PRD27NKEgUhZ6xc4RJCLOgUMfE7RvyyjLC__390ooRa4BF8ZLS6CQ&usqp=CAU"),
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROA8QBdELzSJmUg1PRD27NKEgUhZ6xc4RJCLOgUMfE7RvyyjLC__390ooRa4BF8ZLS6CQ&usqp=CAU"),
   ];
   int activeIndex = 0;
   int count = 0;
@@ -51,8 +51,8 @@ class _BodyState extends State<Body> with TickerProviderStateMixin{
   AnimationController? _controller;
   Animation<Offset>? offset;
 
-  displaySnackMessage(String message){
-    if(mounted){
+  displaySnackMessage(String message) {
+    if (mounted) {
       setState(() {
         processing = false;
         _snackMessage = message;
@@ -71,7 +71,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin{
     _controller = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 200));
     offset = Tween<Offset>(
-        begin: const Offset(0.0, -2.0), end: const Offset(0.0, 0.0))
+            begin: const Offset(0.0, -2.0), end: const Offset(0.0, 0.0))
         .animate(_controller!);
   }
 
@@ -98,14 +98,17 @@ class _BodyState extends State<Body> with TickerProviderStateMixin{
                               offset: Offset(0, 3))
                         ]),
                     child: CarouselSlider.builder(
-                      itemCount: widget.product!.listImagePath == null ? slider.length: widget.product!.listImagePath!.length,
+                      itemCount: widget.product!.listImagePath == null
+                          ? slider.length
+                          : widget.product!.listImagePath!.length,
                       options: CarouselOptions(
                           pauseAutoPlayInFiniteScroll: false,
                           height: getProportionateScreenHeight(180.0),
                           scrollDirection: Axis.horizontal,
                           autoPlay: true,
                           autoPlayCurve: Curves.fastOutSlowIn,
-                          autoPlayAnimationDuration: Duration(milliseconds: 800),
+                          autoPlayAnimationDuration:
+                              Duration(milliseconds: 800),
                           enableInfiniteScroll: true,
                           viewportFraction: 1.0,
                           onPageChanged: (index, reason) {
@@ -116,17 +119,19 @@ class _BodyState extends State<Body> with TickerProviderStateMixin{
                       itemBuilder: (context, index, realIndex) {
                         return ClipRRect(
                           borderRadius: BorderRadius.circular(10),
-                          child: (widget.product?.listImagePath !=null && (widget.product?.listImagePath?.isNotEmpty)!)
+                          child: (widget.product?.listImagePath != null &&
+                                  (widget.product?.listImagePath?.isNotEmpty)!)
                               ? CachedNetworkImage(
-                            width: getProportionateScreenWidth(250.0),
-                            height: double.infinity,
-                            imageUrl: "${env.config?.imageUrl}${(widget.product?.listImagePath?[index])}",
-                            fit: BoxFit.fill,
-                          )
-                              :Image.asset(
-                            "assets/Images/background_pic_image",
-                            fit: BoxFit.fill,
-                          ),
+                                  width: getProportionateScreenWidth(250.0),
+                                  height: double.infinity,
+                                  imageUrl:
+                                      "${env.config?.imageUrl}${(widget.product?.listImagePath?[index])}",
+                                  fit: BoxFit.fill,
+                                )
+                              : Image.asset(
+                                  "assets/Images/background_pic_image",
+                                  fit: BoxFit.fill,
+                                ),
                         );
                       },
                     ),
@@ -138,7 +143,9 @@ class _BodyState extends State<Body> with TickerProviderStateMixin{
                     padding: const EdgeInsets.only(bottom: 10),
                     child: AnimatedSmoothIndicator(
                       activeIndex: activeIndex, // PageController
-                      count: widget.product!.listImagePath == null ? slider.length: widget.product!.listImagePath!.length,
+                      count: widget.product!.listImagePath == null
+                          ? slider.length
+                          : widget.product!.listImagePath!.length,
                       effect: ColorTransitionEffect(
                           activeDotColor: orange,
                           dotWidth: 10,
@@ -162,7 +169,8 @@ class _BodyState extends State<Body> with TickerProviderStateMixin{
                         width: double.infinity,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12.0),
-                          border: Border.all(color: Color(0xFFEFEFEF), width: 0.1),
+                          border:
+                              Border.all(color: Color(0xFFEFEFEF), width: 0.1),
                           gradient: RadialGradient(
                             radius: 1.0,
                             center: Alignment(-0.6, -0.7),
@@ -182,7 +190,8 @@ class _BodyState extends State<Body> with TickerProviderStateMixin{
                             ),
                             Text(
                               "${widget.product!.description}",
-                              style: GoogleFonts.poppins(color: blueGrey, fontSize: 10),
+                              style: GoogleFonts.poppins(
+                                  color: blueGrey, fontSize: 10),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
                             ),
@@ -192,19 +201,25 @@ class _BodyState extends State<Body> with TickerProviderStateMixin{
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Rs ${widget.product?.discountedPrice ?? widget.product?.price}',
+                                Text(
+                                    'Rs ${widget.product?.discountedPrice ?? widget.product?.price}',
                                     style: GoogleFonts.poppins(color: orange)),
                                 SizedBox(
                                   width: getProportionateScreenWidth(4),
                                 ),
-                                (widget.product?.discountedPrice != null && widget.product?.discountedPrice != 0)
+                                (widget.product?.discountedPrice != null &&
+                                        widget.product?.discountedPrice != 0)
                                     ? Text('Rs ${widget.product?.price}',
-                                    style: GoogleFonts.poppins(
-                                      color: Colors.grey,
-                                      fontSize: 12,
-                                      decoration: TextDecoration.lineThrough,
-                                    ))
-                                    :SizedBox(height: 0.0,width: 0.0,)
+                                        style: GoogleFonts.poppins(
+                                          color: Colors.grey,
+                                          fontSize: 12,
+                                          decoration:
+                                              TextDecoration.lineThrough,
+                                        ))
+                                    : SizedBox(
+                                        height: 0.0,
+                                        width: 0.0,
+                                      )
                               ],
                             ),
                             Divider(
@@ -216,7 +231,8 @@ class _BodyState extends State<Body> with TickerProviderStateMixin{
                                 Text(
                                   '${widget.business!.businessInfo!.name}',
                                   style: GoogleFonts.poppins(
-                                      color: blueGrey, fontWeight: FontWeight.bold),
+                                      color: blueGrey,
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 SizedBox(
                                   width: 10,
@@ -242,105 +258,205 @@ class _BodyState extends State<Body> with TickerProviderStateMixin{
                             Expanded(child: Container()),
                             SizedBox(
                                 width: double.infinity,
-                                child: HiveServices.getQuantity(widget.product!,items)! < 1
+                                child: HiveServices.getQuantity(
+                                            widget.product!, items)! <
+                                        1
                                     ? CustomButton(
-                                  label: 'Add to cart',
-                                  onPressed: () {
-                                    setState(() {
-                                      isTapped = true;
-                                    });
-                                    List<CartProduct>? cartList = items.getAt(0)?.cartData;
-                                    bool isFound = false;
-                                    int? cartItemIndex;
-                                    int? quantity;
-                                    if(cartList!.isEmpty){
-                                      HiveServices.setBusiness(widget.business!, items);
-                                    }
-                                    if(items.getAt(0)?.business!.businessId == widget.business!.businessId) {
-                                      for (int i = 0; i < cartList.length; i++) {
-                                        if (cartList[i].productName == widget.product?.productName) {
-                                          cartItemIndex = i;
-                                          quantity = cartList[i].quantity;
-                                          isFound = true;
-                                          break;
-                                        }
-                                      }
-                                      if (widget.product?.status == STATUS_PRODUCT_AVAILABLE) {
-                                        if ((widget.product?.quantity)! > 0) {
-                                          if (!isFound) {
-                                            CartProduct cartProduct = CartProduct(
-                                                price: widget.product?.price,
-                                                productName: widget.product?.productName,
-                                                discount: widget.product?.discount,
-                                                discountedPrice: widget.product?.discountedPrice,
-                                                listImagePath: widget.product?.listImagePath,
-                                                updatedStock: widget.product?.quantity,
-                                                quantity: 1);
-                                            HiveServices.setCategory(items.getAt(0)!.currentCategory!, items);
-                                            HiveServices.addProduct(cartProduct, items.getAt(0)!.currentCategory!,items);
-                                            HiveServices.addCategory(items.getAt(0)!.currentCategory!,items);
-                                          } else {
-                                            if (quantity! <= (widget.product?.quantity)!) {
-                                              HiveServices.addQuantity(cartItemIndex!, items);
-                                              HiveServices.setCategory(items.getAt(0)!.currentCategory!, items);
-                                              HiveServices.addCategory(items.getAt(0)!.currentCategory!, items);
+                                        label: 'Add to cart',
+                                        onPressed: () {
+                                          setState(() {
+                                            isTapped = true;
+                                          });
+                                          List<CartProduct>? cartList =
+                                              items.getAt(0)?.cartData;
+                                          bool isFound = false;
+                                          int? cartItemIndex;
+                                          int? quantity;
+                                          if (cartList!.isEmpty) {
+                                            HiveServices.setBusiness(
+                                                widget.business!, items);
+                                          }
+                                          if (items
+                                                  .getAt(0)
+                                                  ?.business!
+                                                  .businessId ==
+                                              widget.business!.businessId) {
+                                            for (int i = 0;
+                                                i < cartList.length;
+                                                i++) {
+                                              if (cartList[i].productName ==
+                                                  widget.product?.productName) {
+                                                cartItemIndex = i;
+                                                quantity = cartList[i].quantity;
+                                                isFound = true;
+                                                break;
+                                              }
+                                            }
+                                            if (widget.product?.status !=
+                                                STATUS_PRODUCT_UNAVAILABLE) {
+                                              if (!isFound) {
+                                                if ((widget
+                                                        .product?.quantity)! >
+                                                    0) {
+                                                  CartProduct cartProduct =
+                                                      CartProduct(
+                                                          price: widget
+                                                              .product?.price,
+                                                          productName: widget
+                                                              .product
+                                                              ?.productName,
+                                                          discount: widget.product
+                                                              ?.discount,
+                                                          discountedPrice: widget
+                                                              .product
+                                                              ?.discountedPrice,
+                                                          listImagePath: widget
+                                                              .product
+                                                              ?.listImagePath,
+                                                          updatedStock: widget
+                                                              .product
+                                                              ?.quantity,
+                                                          quantity: 1);
+                                                  HiveServices.setCategory(
+                                                      items
+                                                          .getAt(0)!
+                                                          .currentCategory!,
+                                                      items);
+                                                  HiveServices.addProduct(
+                                                      cartProduct,
+                                                      items
+                                                          .getAt(0)!
+                                                          .currentCategory!,
+                                                      items);
+                                                  HiveServices.addCategory(
+                                                      items
+                                                          .getAt(0)!
+                                                          .currentCategory!,
+                                                      items);
+                                                } else {
+                                                  displaySnackMessage(
+                                                      "Product is out of stock");
+                                                }
+                                              } else {
+                                                if (quantity! <=
+                                                    (widget
+                                                        .product?.quantity)!) {
+                                                  HiveServices.addQuantity(
+                                                      cartItemIndex!, items);
+                                                  HiveServices.setCategory(
+                                                      items
+                                                          .getAt(0)!
+                                                          .currentCategory!,
+                                                      items);
+                                                  HiveServices.addCategory(
+                                                      items
+                                                          .getAt(0)!
+                                                          .currentCategory!,
+                                                      items);
+                                                } else {
+                                                  displaySnackMessage(
+                                                      "You can't add more");
+                                                }
+                                              }
                                             } else {
-                                              displaySnackMessage("You can't add more");
+                                              displaySnackMessage(
+                                                  "You Can't Add Unavailable Product");
+                                            }
+                                          } else {
+                                            Fluttertoast.showToast(
+                                                msg:
+                                                    "You can't add product from different shop. Remove items first!",
+                                                toastLength: Toast.LENGTH_LONG,
+                                                gravity: ToastGravity.BOTTOM,
+                                                timeInSecForIosWeb: 1,
+                                                backgroundColor: orange,
+                                                textColor: Colors.white,
+                                                fontSize: 15.0);
+                                          }
+                                        },
+                                        color: orange,
+                                      )
+                                    : CustomAddToCartButton(
+                                        label: HiveServices.getQuantity(
+                                                widget.product!, items)
+                                            .toString(),
+                                        subtract: () {
+                                          int? cartItemIndex;
+                                          for (int i = 0;
+                                              i <
+                                                  items
+                                                      .getAt(0)!
+                                                      .cartData!
+                                                      .length;
+                                              i++) {
+                                            if (items
+                                                    .getAt(0)!
+                                                    .cartData![i]
+                                                    .productName ==
+                                                widget.product?.productName) {
+                                              cartItemIndex = i;
+                                              break;
                                             }
                                           }
-                                        } else {
-                                          displaySnackMessage("Product is out of stock");
-                                        }
-                                      } else {
-                                        displaySnackMessage("You Can't Add Unavailable Product");
-                                      }
-                                    }else{
-                                      Fluttertoast.showToast(
-                                          msg: "You can't add product from different shop. Remove items first!",
-                                          toastLength: Toast.LENGTH_LONG,
-                                          gravity: ToastGravity.BOTTOM,
-                                          timeInSecForIosWeb: 1,
-                                          backgroundColor: orange,
-                                          textColor: Colors.white,
-                                          fontSize: 15.0);
-                                    }
-                                  },
-                                  color: orange,
-                                )
-                                    : CustomAddToCartButton(
-                                  label: HiveServices.getQuantity(widget.product!,items).toString(),
-                                  subtract: () {
-                                    int? cartItemIndex;
-                                    for (int i = 0; i < items.getAt(0)!.cartData!.length; i++) {
-                                      if (items.getAt(0)!.cartData![i].productName == widget.product?.productName) {
-                                        cartItemIndex = i;
-                                        break;
-                                      }
-                                    }
-                                    if ((items.getAt(0)!.cartData?[cartItemIndex!].quantity)! <= (items.getAt(0)!.cartData?[cartItemIndex!].updatedStock)!) {
-                                      HiveServices.setCategory(items.getAt(0)!.currentCategory!, items);
-                                      HiveServices.subtractQuantity(cartItemIndex!, items.getAt(0)!.currentCategory!, items);
-                                    } else {
-                                      displaySnackMessage("You can't add more");
-                                    }
-                                  },
-                                  addQuantity: () {
-                                    int? cartItemIndex;
-                                    for (int i = 0; i < items.getAt(0)!.cartData!.length; i++) {
-                                      if (items.getAt(0)!.cartData![i].productName == widget.product?.productName) {
-                                        cartItemIndex = i;
-                                        break;
-                                      }
-                                    }
-                                    if ((items.getAt(0)!.cartData?[cartItemIndex!].quantity)! < (items.getAt(0)!.cartData?[cartItemIndex!].updatedStock)!) {
-                                      HiveServices.addQuantity(cartItemIndex!, items);
-                                    } else {
-                                      displaySnackMessage(
-                                          "You can't add more");
-                                    }
-                                  },
-                                  color: orange,)
-                            )
+                                          if ((items
+                                                  .getAt(0)!
+                                                  .cartData?[cartItemIndex!]
+                                                  .quantity)! <=
+                                              (items
+                                                  .getAt(0)!
+                                                  .cartData?[cartItemIndex!]
+                                                  .updatedStock)!) {
+                                            HiveServices.setCategory(
+                                                items
+                                                    .getAt(0)!
+                                                    .currentCategory!,
+                                                items);
+                                            HiveServices.subtractQuantity(
+                                                cartItemIndex!,
+                                                items
+                                                    .getAt(0)!
+                                                    .currentCategory!,
+                                                items);
+                                          } else {
+                                            displaySnackMessage(
+                                                "You can't add more");
+                                          }
+                                        },
+                                        addQuantity: () {
+                                          int? cartItemIndex;
+                                          for (int i = 0;
+                                              i <
+                                                  items
+                                                      .getAt(0)!
+                                                      .cartData!
+                                                      .length;
+                                              i++) {
+                                            if (items
+                                                    .getAt(0)!
+                                                    .cartData![i]
+                                                    .productName ==
+                                                widget.product?.productName) {
+                                              cartItemIndex = i;
+                                              break;
+                                            }
+                                          }
+                                          if ((items
+                                                  .getAt(0)!
+                                                  .cartData?[cartItemIndex!]
+                                                  .quantity)! <
+                                              (items
+                                                  .getAt(0)!
+                                                  .cartData?[cartItemIndex!]
+                                                  .updatedStock)!) {
+                                            HiveServices.addQuantity(
+                                                cartItemIndex!, items);
+                                          } else {
+                                            displaySnackMessage(
+                                                "You can't add more");
+                                          }
+                                        },
+                                        color: orange,
+                                      ))
                           ],
                         ),
                       ),
@@ -356,16 +472,17 @@ class _BodyState extends State<Body> with TickerProviderStateMixin{
             padding: const EdgeInsets.all(5.0),
             child: Align(
               alignment: Alignment.topCenter,
-              child:SlideTransition(
+              child: SlideTransition(
                 position: offset!,
-                child:  Container(
-                  margin: EdgeInsets.only(top: getProportionateScreenHeight(10.0)),
+                child: Container(
+                  margin:
+                      EdgeInsets.only(top: getProportionateScreenHeight(10.0)),
                   padding: const EdgeInsets.all(20.0),
                   decoration: BoxDecoration(
                       color: Colors.red,
-                      borderRadius: BorderRadius.all(Radius.circular(20.0))
-                  ),
-                  child:Text(_snackMessage,
+                      borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                  child: Text(
+                    _snackMessage,
                     textAlign: TextAlign.center,
                     style: GoogleFonts.poppins(
                         fontSize: 15,
