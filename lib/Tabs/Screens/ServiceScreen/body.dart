@@ -99,13 +99,10 @@ class _BodyState extends State<Body> {
     setState(() {
       processing = true;
     });
-    Map<String, String>? result =
-        await ApiCalls.getShopByNameWhoProvideServices(
-            _pageNo, _noOfElements, businessName);
+    Map<String, String>? result = await ApiCalls.getShopByNameWhoProvideServices(_pageNo, _noOfElements, businessName);
     if (result?["error"] == null) {
       if (mounted) {
         setState(() {
-          print((result?["success"])!);
           _searchBusiness = businessFromJson((result?["success"])!);
           _pageNo++;
         });

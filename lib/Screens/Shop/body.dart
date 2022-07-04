@@ -178,10 +178,10 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
             backgroundColor: orange,
             textColor: Colors.white,
             fontSize: 15.0);
-        setState(() {
-          processing = false;
-        });
       }
+      setState(() {
+        processing = false;
+      });
   }
 
   getProductsByCategoryInBusiness(String categoryName, int pageNo) async {
@@ -230,6 +230,9 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
           textColor: Colors.white,
           fontSize: 15.0);
     }
+    setState(() {
+      processing = false;
+    });
   }
 
   getLoadMoreProductsByCategoryInBusiness(String categoryName, int pageNo) async {
@@ -277,6 +280,9 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
           textColor: Colors.white,
           fontSize: 15.0);
     }
+    setState(() {
+      processing = false;
+    });
   }
 
   getSearchProductsInBusiness(String productName) async {
