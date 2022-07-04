@@ -105,113 +105,118 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin{
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
-      body: Stack(
-        children: [
-          Container(
-            height: getProportionateScreenHeight(100),
-            decoration: BoxDecoration(
-                color: blueGrey,
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(15),
-                    bottomRight: Radius.circular(15))),
-          ),
-          Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                child: Container(
-                  height: getProportionateScreenHeight(150),
-                  decoration: BoxDecoration(
-                    color: white,
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(20),
-                        bottomRight: Radius.circular(20)),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(15),
-                        bottomRight: Radius.circular(15)),
-                    child: CarouselSlider.builder(
-                      itemCount: slider.length,
-                      options: CarouselOptions(
-                          pauseAutoPlayInFiniteScroll: false,
-                          height: getProportionateScreenHeight(350.0),
-                          scrollDirection: Axis.horizontal,
-                          reverse: false,
-                          autoPlay: true,
-                          autoPlayCurve: Curves.fastOutSlowIn,
-                          autoPlayAnimationDuration: Duration(milliseconds: 800),
-                          enableInfiniteScroll: true,
-                          viewportFraction: 1.0 ,
-                          onPageChanged: (index,reason){
-                            setState(() {
-                              activeIndex=index;
-                            });
-                          }
-                      ),
-                      itemBuilder: (context,index,realIndex){
-                        return SizedBox(
-                          height: getProportionateScreenHeight(100),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20),bottomRight: Radius.circular(20)),
-                            child: SvgPicture.asset(
-                              'assets/Images/Logo.svg',
-                              width: 280,
+      body: GestureDetector(
+        onTap: (){
+          FocusScope.of(context).unfocus();
+        },
+        child: Stack(
+          children: [
+            Container(
+              height: getProportionateScreenHeight(100),
+              decoration: BoxDecoration(
+                  color: blueGrey,
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(15),
+                      bottomRight: Radius.circular(15))),
+            ),
+            Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                  child: Container(
+                    height: getProportionateScreenHeight(150),
+                    decoration: BoxDecoration(
+                      color: white,
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(20),
+                          bottomRight: Radius.circular(20)),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(15),
+                          bottomRight: Radius.circular(15)),
+                      child: CarouselSlider.builder(
+                        itemCount: slider.length,
+                        options: CarouselOptions(
+                            pauseAutoPlayInFiniteScroll: false,
+                            height: getProportionateScreenHeight(350.0),
+                            scrollDirection: Axis.horizontal,
+                            reverse: false,
+                            autoPlay: true,
+                            autoPlayCurve: Curves.fastOutSlowIn,
+                            autoPlayAnimationDuration: Duration(milliseconds: 800),
+                            enableInfiniteScroll: true,
+                            viewportFraction: 1.0 ,
+                            onPageChanged: (index,reason){
+                              setState(() {
+                                activeIndex=index;
+                              });
+                            }
+                        ),
+                        itemBuilder: (context,index,realIndex){
+                          return SizedBox(
+                            height: getProportionateScreenHeight(100),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20),bottomRight: Radius.circular(20)),
+                              child: SvgPicture.asset(
+                                'assets/Images/Logo.svg',
+                                width: 280,
+                              ),
                             ),
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),
-              ),
-              AnimatedSmoothIndicator(
-                activeIndex: activeIndex,  // PageController
-                count: slider.length,
-                effect:  ColorTransitionEffect(
-                    activeDotColor: orange,
-                    dotWidth: 10,
-                    dotHeight: 10
-                ),  // your preferred effect
-              ),
-              DecoratedBox(
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.0),
-                  border: Border(bottom: BorderSide(color: grey, width: 0.8)),
+                AnimatedSmoothIndicator(
+                  activeIndex: activeIndex,  // PageController
+                  count: slider.length,
+                  effect:  ColorTransitionEffect(
+                      activeDotColor: orange,
+                      dotWidth: 10,
+                      dotHeight: 10
+                  ),  // your preferred effect
                 ),
-                child: TabBar(
-                  indicatorColor: orange,
-                  indicatorWeight: 1.5,
-                  labelColor: orange,
-                  labelStyle: GoogleFonts.poppins(fontWeight: FontWeight.bold,fontSize: 12),
-                  unselectedLabelColor: grey,
-                  controller: _controller,
-                  onTap: (value){
-                    calculateBusinessesWithinRange();
-                  },
-                  tabs: const [
-                    Tab(text: "Shop"),
-                    Tab(text: "Services")
-                  ],
-                ),
-              ),
-              Expanded(
-                  child: Stack(
-                    children: [
-                      AbsorbPointer(
-                          absorbing: processing,
-                          child: Opacity(
-                              opacity: !processing ? 1.0 : 0.3,
-                              child: TabBarView(
-                                  controller: _controller,
-                                  children: _screens))),
-                      processing ? Loader(color: orange) : SizedBox(width: 0.0, height: 0.0),
-
+                DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.0),
+                    border: Border(bottom: BorderSide(color: grey, width: 0.8)),
+                  ),
+                  child: TabBar(
+                    indicatorColor: orange,
+                    indicatorWeight: 1.5,
+                    labelColor: orange,
+                    labelStyle: GoogleFonts.poppins(fontWeight: FontWeight.bold,fontSize: 12),
+                    unselectedLabelColor: grey,
+                    controller: _controller,
+                    onTap: (value){
+                      calculateBusinessesWithinRange();
+                    },
+                    tabs: const [
+                      Tab(text: "Shop"),
+                      Tab(text: "Services")
                     ],
-                  )),
-            ],
-          )
-        ],
+                  ),
+                ),
+                Expanded(
+                    child: Stack(
+                      children: [
+                        AbsorbPointer(
+                            absorbing: processing,
+                            child: Opacity(
+                                opacity: !processing ? 1.0 : 0.3,
+                                child: TabBarView(
+                                    controller: _controller,
+                                    children: _screens))),
+                        processing ? Loader(color: orange) : SizedBox(width: 0.0, height: 0.0),
+
+                      ],
+                    )),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

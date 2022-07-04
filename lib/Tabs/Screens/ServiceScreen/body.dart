@@ -160,214 +160,220 @@ class _BodyState extends State<Body> {
 
   @override
   Widget build(BuildContext context) {
+    return Consumer<UserProvider>(builder: (context, user, child) {
     return Stack(
       children: [
-        Consumer<UserProvider>(builder: (context, user, child) {
-          return Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(15),
-                child: Container(
-                  decoration: BoxDecoration(boxShadow: [
-                    BoxShadow(
-                        color: grey.withOpacity(.1),
-                        blurRadius: 5,
-                        offset: Offset(0, 3))
-                  ]),
-                  height: getProportionateScreenHeight(35),
-                  child: CustomSearchTextField(
-                    controller: shopController,
-                    label: 'Search by shops',
-                    onChanged: (value) {
-                      reInitialize();
-                      if (value != "") {
-                        _debouncer.run(() {
-                          getShopByNameWhoProvideServices(value);
-                        });
-                        setState(() {
-                          _isSearching = true;
-                        });
-                      } else {
-                        setState(() {
-                          reInitialize();
-                          _isSearching = false;
-                        });
-                        context.read<UserProvider>().users.businesses;
-                      }
+        AbsorbPointer(
+          absorbing: processing,
+          child: Opacity(
+            opacity: processing ? 0.3 : 1.0,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: Container(
+                    decoration: BoxDecoration(boxShadow: [
+                      BoxShadow(
+                          color: grey.withOpacity(.1),
+                          blurRadius: 5,
+                          offset: Offset(0, 3))
+                    ]),
+                    height: getProportionateScreenHeight(35),
+                    child: CustomSearchTextField(
+                      controller: shopController,
+                      label: 'Search by shops',
+                      onChanged: (value) {
+                        reInitialize();
+                        if (value != "") {
+                          _debouncer.run(() {
+                            getShopByNameWhoProvideServices(value);
+                          });
+                          setState(() {
+                            _isSearching = true;
+                          });
+                        } else {
+                          setState(() {
+                            reInitialize();
+                            _isSearching = false;
+                          });
+                          context.read<UserProvider>().users.businesses;
+                        }
+                      },
+                    ),
+                  ),
+                ),
+                (user.users.addresses == null || user.users.addresses!.isEmpty)
+                    ? SizedBox(
+                  height: getProportionateScreenHeight(250),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(
+                          "assets/Icons/no_address.svg",
+                          color: blueGrey,
+                          width: 30.0,
+                        ),
+                        SizedBox(
+                          height: getProportionateScreenHeight(20.0),
+                        ),
+                        Text(
+                          "You have no addresses to search shops!",
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.poppins(
+                              fontSize: 13,
+                              color: blueGrey,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "You can add new address to get shops",
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.poppins(
+                              fontSize: 12,
+                              color: blueGrey.withOpacity(0.5),
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+                    : _business.isEmpty
+                    ? Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        "assets/Icons/search_icon.svg",
+                        color: blueGrey,
+                        width: 20.0,
+                      ),
+                      SizedBox(
+                        height: getProportionateScreenHeight(20.0),
+                      ),
+                      Text(
+                        "You do not have any Shops in your vicinity",
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.poppins(
+                            fontSize: 13,
+                            color: blueGrey,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        "You can change your address to get other shops too",
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.poppins(
+                            fontSize: 12,
+                            color: blueGrey.withOpacity(0.5),
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                )
+                    : !_isSearching
+                    ? Expanded(
+                  child: GridView.builder(
+                    padding: const EdgeInsets.only(
+                      left: 15,
+                      top: 10,
+                      right: 15,
+                      bottom: 10,
+                    ),
+                    gridDelegate:
+                    SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 1 / 1.68,
+                      mainAxisSpacing: 15,
+                      crossAxisSpacing: 10,
+                    ),
+                    shrinkWrap: true,
+                    itemCount: _business.length,
+                    itemBuilder: (context, index) {
+                      return CustomCard(
+                        business: _business[index],
+                        onTap: () {
+                          FocusScope.of(context).unfocus();
+                          Navigator.pushNamed(context,
+                              ServiceDashboardScreen.routeName,
+                              arguments: _business[index]);
+                        },
+                      );
+                    },
+                  ),
+                )
+                    : _searchBusiness.isEmpty
+                    ? Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        "assets/Icons/search_icon.svg",
+                        color: blueGrey,
+                        width: 20.0,
+                      ),
+                      SizedBox(
+                        height:
+                        getProportionateScreenHeight(20.0),
+                      ),
+                      Text(
+                        "There are no shops",
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.poppins(
+                            fontSize: 13,
+                            color: blueGrey,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        "Please enter the correct name",
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.poppins(
+                            fontSize: 12,
+                            color: blueGrey.withOpacity(0.5),
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                )
+                    : Expanded(
+                  child: GridView.builder(
+                    padding: const EdgeInsets.only(
+                      left: 15,
+                      top: 10,
+                      right: 15,
+                      bottom: 10,
+                    ),
+                    gridDelegate:
+                    SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 1 / 1.68,
+                      mainAxisSpacing: 15,
+                      crossAxisSpacing: 10,
+                    ),
+                    shrinkWrap: true,
+                    itemCount: _searchBusiness.length,
+                    itemBuilder: (context, index) {
+                      return CustomCard(
+                        business: _searchBusiness[index],
+                        onTap: () {
+                          FocusScope.of(context).unfocus();
+                          Navigator.pushNamed(context,
+                              ServiceDashboardScreen.routeName,
+                              arguments:
+                              _searchBusiness[index]);
+                        },
+                      );
                     },
                   ),
                 ),
-              ),
-              (user.users.addresses == null || user.users.addresses!.isEmpty)
-                  ? SizedBox(
-                      height: getProportionateScreenHeight(250),
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SvgPicture.asset(
-                              "assets/Icons/no_address.svg",
-                              color: blueGrey,
-                              width: 30.0,
-                            ),
-                            SizedBox(
-                              height: getProportionateScreenHeight(20.0),
-                            ),
-                            Text(
-                              "You have no addresses to search shops!",
-                              textAlign: TextAlign.center,
-                              style: GoogleFonts.poppins(
-                                  fontSize: 13,
-                                  color: blueGrey,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              "You can add new address to get shops",
-                              textAlign: TextAlign.center,
-                              style: GoogleFonts.poppins(
-                                  fontSize: 12,
-                                  color: blueGrey.withOpacity(0.5),
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                  : _business.isEmpty
-                      ? Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SvgPicture.asset(
-                                "assets/Icons/search_icon.svg",
-                                color: blueGrey,
-                                width: 20.0,
-                              ),
-                              SizedBox(
-                                height: getProportionateScreenHeight(20.0),
-                              ),
-                              Text(
-                                "You do not have any Shops in your vicinity",
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.poppins(
-                                    fontSize: 13,
-                                    color: blueGrey,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                "You can change your address to get other shops too",
-                                textAlign: TextAlign.center,
-                                style: GoogleFonts.poppins(
-                                    fontSize: 12,
-                                    color: blueGrey.withOpacity(0.5),
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
-                        )
-                      : !_isSearching
-                          ? Expanded(
-                              child: GridView.builder(
-                                padding: const EdgeInsets.only(
-                                  left: 15,
-                                  top: 10,
-                                  right: 15,
-                                  bottom: 10,
-                                ),
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  childAspectRatio: 1 / 1.68,
-                                  mainAxisSpacing: 15,
-                                  crossAxisSpacing: 10,
-                                ),
-                                shrinkWrap: true,
-                                itemCount: _business.length,
-                                itemBuilder: (context, index) {
-                                  return CustomCard(
-                                    business: _business[index],
-                                    onTap: () {
-                                      FocusScope.of(context).unfocus();
-                                      Navigator.pushNamed(context,
-                                          ServiceDashboardScreen.routeName,
-                                          arguments: _business[index]);
-                                    },
-                                  );
-                                },
-                              ),
-                            )
-                          : _searchBusiness.isEmpty
-                              ? Expanded(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      SvgPicture.asset(
-                                        "assets/Icons/search_icon.svg",
-                                        color: blueGrey,
-                                        width: 20.0,
-                                      ),
-                                      SizedBox(
-                                        height:
-                                            getProportionateScreenHeight(20.0),
-                                      ),
-                                      Text(
-                                        "There are no shops",
-                                        textAlign: TextAlign.center,
-                                        style: GoogleFonts.poppins(
-                                            fontSize: 13,
-                                            color: blueGrey,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        "Please enter the correct name",
-                                        textAlign: TextAlign.center,
-                                        style: GoogleFonts.poppins(
-                                            fontSize: 12,
-                                            color: blueGrey.withOpacity(0.5),
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              : Expanded(
-                                  child: GridView.builder(
-                                    padding: const EdgeInsets.only(
-                                      left: 15,
-                                      top: 10,
-                                      right: 15,
-                                      bottom: 10,
-                                    ),
-                                    gridDelegate:
-                                        SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      childAspectRatio: 1 / 1.68,
-                                      mainAxisSpacing: 15,
-                                      crossAxisSpacing: 10,
-                                    ),
-                                    shrinkWrap: true,
-                                    itemCount: _searchBusiness.length,
-                                    itemBuilder: (context, index) {
-                                      return CustomCard(
-                                        business: _searchBusiness[index],
-                                        onTap: () {
-                                          FocusScope.of(context).unfocus();
-                                          Navigator.pushNamed(context,
-                                              ServiceDashboardScreen.routeName,
-                                              arguments:
-                                                  _searchBusiness[index]);
-                                        },
-                                      );
-                                    },
-                                  ),
-                                ),
-              SizedBox(
-                height: getProportionateScreenHeight(15),
-              ),
-            ],
-          );
-        }),
+                SizedBox(
+                  height: getProportionateScreenHeight(15),
+                ),
+              ],
+            ),
+          ),
+        ),
         processing ? Loader(color: orange) : SizedBox(width: 0.0, height: 0.0),
       ],
     );
+    });
   }
 }
