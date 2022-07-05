@@ -119,10 +119,11 @@ class _SideMenuState extends State<SideMenu> {
                                                     imageUrl: "${env.config?.imageUrl}${(user.users.imagePath)!}",
                                                     fit: BoxFit.fill,
                                                   )
-                                                      :Image.asset(
+                                                      : SvgPicture.asset("assets/Icons/avatar.svg")
+                                                  /*Image.asset(
                                                     "assets/Images/background_pic_image",
                                                     fit: BoxFit.fill,
-                                                  ),
+                                                  ),*/
                                                 )
                                             )),
                                       ),

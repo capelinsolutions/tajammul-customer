@@ -13,16 +13,19 @@ class Queries {
       }
     """;
 
-  //create user query
+//create user query
   static String createUser = """
-  mutation createUser(\$UserInput: UserInput){
-       createUser(input: \$UserInput){
-    data {
-    userId
-    }
+mutation createUser(\$userData: UserInput){
+     createUser(input: \$userData){
+  message
+  code
+  status
+  data {
+  userId
   }
-  }
-  """;
+}
+}
+""";
 
   //create userTypes query
   static String getUserById = """
@@ -147,15 +150,17 @@ class Queries {
   mutation forgotPassword(\$newPassword: String!,\$user: String!){
        forgotPassword(newPassword:\$newPassword,user:\$user){
        status
+       message
        }
   }
   """;
 
   //change password
   static String changePassword = """
-  mutation forgotPassword(\$newPassword: String!,\$currentPassword: String!){
+  mutation changePassword(\$newPassword: String!,\$currentPassword: String!){
        changePassword(newPassword:\$newPassword,currentPassword:\$currentPassword){
        status
+       message
        }
   }
   """;

@@ -214,10 +214,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                                                       imageUrl: "${env.config?.imageUrl}${(data.product?.listImagePath?[0])}",
                                                       fit: BoxFit.fill,
                                                     )
-                                                        :Image.asset(
-                                                      "assets/Images/background_pic_image",
-                                                      fit: BoxFit.fill,
-                                                    ),
+                                                        :SvgPicture.asset("assets/Icons/avatar.svg")
                                                   )
                                                 ))),
                                       ),

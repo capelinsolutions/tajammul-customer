@@ -205,13 +205,6 @@ class _BodyState extends State<Body> {
                                                   String? result;
                                                   if (value.isEmpty) {
                                                     result = "Required Field";
-                                                  } else if (value.length >
-                                                      16) {
-                                                    result =
-                                                        "Password should be less than 16 characters long";
-                                                  } else if (value.length < 6) {
-                                                    result =
-                                                        "Password must be at least 6 characters long";
                                                   }
                                                   return result;
                                                 },

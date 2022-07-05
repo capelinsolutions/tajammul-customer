@@ -233,10 +233,8 @@ class _BodyState extends State<Body> {
                                         business: user.users.businesses![index],
                                         onTap: () {
                                           FocusScope.of(context).unfocus();
-                                          Navigator.pushNamed(context,
-                                              ShopDashboardScreen.routeName,
-                                              arguments:
-                                                  user.users.businesses![index]);
+                                          Navigator.pushNamed(context, ShopDashboardScreen.routeName,
+                                              arguments: user.users.businesses![index]);
                                         },
                                       );
                                     },

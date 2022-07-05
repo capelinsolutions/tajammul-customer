@@ -252,7 +252,7 @@ class ApiCalls {
       }
       if(result.data?['forgotPassword']["status"] != 200) {
         if(result.data?['forgotPassword']["status"] == 400 ){
-          return "You have already used this password";
+          return "Your old password can not be your new password";
         }
         return "Something went wrong please try again";
       }
@@ -360,10 +360,11 @@ class ApiCalls {
             document: gql(
                 Queries.createUser),
             variables: {
-              'UserInput': data,
+              'userData': data,
             }
         ),
       );
+
       if (result.hasException) {
         return result.exception!.graphqlErrors[0].message;
       }
@@ -371,7 +372,7 @@ class ApiCalls {
         if(result.data?['createUser']["status"] == 400 ){
           return result.data?['createUser']["message"];
         }
-        return "Something went wrong please try again";
+        return "Something went wrong";
       }
       return "Created";
     }

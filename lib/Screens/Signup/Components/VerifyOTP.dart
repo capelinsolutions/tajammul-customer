@@ -128,7 +128,6 @@ class _VerifyOTPState extends State<VerifyOTP> {
 
     String result = await ApiCalls.createUser(userInfo["username"]!,userInfo["email"]!,userInfo["password"]!,userInfo["fName"]!,userInfo["lName"]!,widget.phoneNumber!);
     if(result!="Created") {
-
       Fluttertoast.showToast(
           msg: result,
           toastLength: Toast.LENGTH_LONG,
@@ -138,12 +137,10 @@ class _VerifyOTPState extends State<VerifyOTP> {
           textColor: Colors.white,
           fontSize: 15.0
       );
-
     }
     else{
       //otp expired when account has been created
       Provider.of<OTPExpiredProvider>(context, listen: false).setExpiry(true);
-
       Navigator.pushNamedAndRemoveUntil(context, SignInScreen.routeName, (route) => false);
     }
     setState(() {

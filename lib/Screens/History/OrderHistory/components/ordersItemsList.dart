@@ -260,7 +260,7 @@ class _OrderItemsListState extends State<OrderItemsList> {
                                                 Row(
                                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                   children: [
-                                                    Text("Total",style: GoogleFonts.poppins(
+                                                    Text("Subtotal",style: GoogleFonts.poppins(
                                                         fontSize: 12,
                                                         color: black,
                                                         fontWeight: FontWeight.w700),),

@@ -27,6 +27,7 @@ class ProductItemsList extends StatefulWidget {
   final VoidCallback? add;
   final VoidCallback? subtract;
   final VoidCallback? addQuantity;
+  final VoidCallback? onTap;
   final Function processing;
   final String? from;
   final bool? isPresent;
@@ -46,6 +47,7 @@ class ProductItemsList extends StatefulWidget {
       required this.add,
       this.subtract,
       this.addQuantity,
+        this.onTap,
       this.isPresent})
       : super(key: key);
 
@@ -203,328 +205,337 @@ class _ProductItemsListState extends State<ProductItemsList> {
     return ValueListenableBuilder(
         valueListenable: dataBox!.listenable(),
         builder: (context, Box<HiveProduct> items, _){
-          return Stack(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: white,
-                  borderRadius: BorderRadius.circular(15),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.grey.shade300,
-                        blurRadius: 4,
-                        offset: Offset(0, 3))
-                  ],
-                ),
-                child: Column(
+          return AbsorbPointer(
+            absorbing: (widget.product.quantity)! > 0 ? false : true,
+            child: Opacity(
+              opacity: (widget.product.quantity)! > 0 ? 1.0 : 0.3,
+              child: InkWell(
+                onTap: widget.onTap,
+                child: Stack(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Container(
-                            height: getProportionateScreenHeight(20),
-                            width: getProportionateScreenWidth(55),
-                            decoration: BoxDecoration(
-                              color: orange,
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(15),
-                                  bottomRight: Radius.circular(3)),
-                            ),
-                            child: Center(
-                                child: Text(
-                                  '${widget.product.discount ?? 0}% Off',
-                                  style:
-                                  GoogleFonts.poppins(fontSize: 10, color: white),
-                                )),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: white,
+                        borderRadius: BorderRadius.circular(15),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.grey.shade300,
+                              blurRadius: 4,
+                              offset: Offset(0, 3))
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Align(
+                                alignment: Alignment.topLeft,
+                                child: Container(
+                                  height: getProportionateScreenHeight(20),
+                                  width: getProportionateScreenWidth(55),
+                                  decoration: BoxDecoration(
+                                    color: orange,
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(15),
+                                        bottomRight: Radius.circular(3)),
+                                  ),
+                                  child: Center(
+                                      child: Text(
+                                        '${widget.product.discount ?? 0}% Off',
+                                        style:
+                                        GoogleFonts.poppins(fontSize: 10, color: white),
+                                      )),
+                                ),
+                              ),
+                              Visibility(
+                                visible: !processing,
+                                child: Padding(
+                                  padding: EdgeInsets.all(5),
+                                  child: InkWell(
+                                    onTap: () async {
+                                      if (widget.isUpdate) {
+                                        if (!isLiked) {
+                                          addProductInWishList();
+                                        } else {
+                                          deleteProductFromWishList();
+                                        }
+                                      } else {
+                                        if (!loadWishList()) {
+                                          addProductInWishList();
+                                        } else {
+                                          deleteProductFromWishList();
+                                        }
+                                      }
+                                      setState(() {
+                                        widget.isUpdate = true;
+                                      });
+                                    },
+                                    child: Container(
+                                      height: getProportionateScreenHeight(30),
+                                      width: getProportionateScreenWidth(30),
+                                      decoration: BoxDecoration(
+                                          color: yellow.withOpacity(.23),
+                                          shape: BoxShape.circle),
+                                      child: Center(
+                                        child:
+                                        (widget.isUpdate ? isLiked : loadWishList())
+                                            ? SvgPicture.asset(
+                                          "assets/Icons/heart_fill.svg",
+                                          width: 13,
+                                        )
+                                            : SvgPicture.asset(
+                                          "assets/Icons/heart.svg",
+                                          width: 13,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                        Visibility(
-                          visible: !processing,
-                          child: Padding(
-                            padding: EdgeInsets.all(5),
-                            child: InkWell(
-                              onTap: () async {
-                                if (widget.isUpdate) {
-                                  if (!isLiked) {
-                                    addProductInWishList();
-                                  } else {
-                                    deleteProductFromWishList();
-                                  }
-                                } else {
-                                  if (!loadWishList()) {
-                                    addProductInWishList();
-                                  } else {
-                                    deleteProductFromWishList();
-                                  }
-                                }
-                                setState(() {
-                                  widget.isUpdate = true;
-                                });
-                              },
+                          SizedBox(
+                            width: getProportionateScreenWidth(140),
+                            height: getProportionateScreenHeight(130),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(15),
+                              child: (widget.product.listImagePath !=null && (widget.product.listImagePath?.isNotEmpty)!)
+                                  ? CachedNetworkImage(
+                                imageUrl: "${env.config?.imageUrl}${(widget.product.listImagePath?[0])}",
+                                fit: BoxFit.fill,
+                              )
+                                  :Image.asset(
+                                "assets/Images/background_pic_image",
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        '${widget.product.productName}',
+                                        style: GoogleFonts.poppins(
+                                            color: blueGrey, fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        '${widget.product.description}',
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+                                        style: GoogleFonts.poppins(
+                                            fontSize: 10, color: blueGrey),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                    (widget.product.quantity ?? 0) < 1
+                        ? Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Rs ${widget.product.discountedPrice ?? widget.product.price}',
+                                    style: GoogleFonts.poppins(color: orange)),
+                                SizedBox(
+                                  width: getProportionateScreenWidth(4),
+                                ),
+                                (widget.product.discountedPrice != null && widget.product.discountedPrice != 0)
+                                    ? Text('Rs ${widget.product.price}',
+                                    style: GoogleFonts.poppins(
+                                      color: Colors.grey,
+                                      fontSize: 12,
+                                      decoration: TextDecoration.lineThrough,
+                                    ))
+                                    :SizedBox(height: 0.0,width: 0.0,)
+                              ],
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              widget.add!();
+                              setState(() {
+                                isPresent = true;
+                              });
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 1),
                               child: Container(
-                                height: getProportionateScreenHeight(30),
-                                width: getProportionateScreenWidth(30),
+                                height: getProportionateScreenHeight(35),
+                                width: getProportionateScreenWidth(35),
+                                padding: EdgeInsets.all(5),
                                 decoration: BoxDecoration(
-                                    color: yellow.withOpacity(.23),
-                                    shape: BoxShape.circle),
-                                child: Center(
-                                  child:
-                                  (widget.isUpdate ? isLiked : loadWishList())
-                                      ? SvgPicture.asset(
-                                    "assets/Icons/heart_fill.svg",
-                                    width: 13,
-                                  )
-                                      : SvgPicture.asset(
-                                    "assets/Icons/heart.svg",
-                                    width: 13,
+                                  color: orange,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(15),
+                                    bottomRight: Radius.circular(15),
+                                  ),
+                                ),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: white,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Center(
+                                    child: SvgPicture.asset(
+                                      "assets/Icons/addIcon.svg",
+                                      width: 10,
+                                      color: orange,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
+                          )
+                        ],
+                      ),
+                    )
+                        : isPresent
+                        ? Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 1),
+                        child: Container(
+                          padding: EdgeInsets.all(2),
+                          decoration: BoxDecoration(
+                            color: orange,
+                            boxShadow: [
+                              BoxShadow(
+                                  color: grey.withOpacity(.4),
+                                  blurRadius: 5,
+                                  offset: Offset(0, -3))
+                            ],
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(15),
+                              bottomRight: Radius.circular(15),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              InkWell(
+                                  onTap: () {
+                                    widget.subtract!();
+                                    if (HiveServices.getQuantity(widget.product,items)! > 0) {
+                                      setState(() {
+                                        isPresent = false;
+                                      });
+                                    }
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.all(10),
+                                    height: getProportionateScreenHeight(30),
+                                    width: getProportionateScreenWidth(30),
+                                    child: SvgPicture.asset(
+                                        'assets/Icons/remove.svg',
+                                        width: 10),
+                                  )),
+                              Text(
+                                HiveServices.getQuantity(widget.product,items).toString(),
+                                style: GoogleFonts.poppins(
+                                    color: white, fontWeight: FontWeight.bold),
+                              ),
+                              InkWell(
+                                  onTap: () {
+                                    widget.addQuantity!();
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.all(5),
+                                    height: getProportionateScreenHeight(30),
+                                    width: getProportionateScreenWidth(30),
+                                    child: SvgPicture.asset(
+                                        'assets/Icons/addIcon.svg'),
+                                  )),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
-                    SizedBox(
-                      width: getProportionateScreenWidth(140),
-                      height: getProportionateScreenHeight(130),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
-                        child: (widget.product.listImagePath !=null && (widget.product.listImagePath?.isNotEmpty)!)
-                            ? CachedNetworkImage(
-                          imageUrl: "${env.config?.imageUrl}${(widget.product.listImagePath?[0])}",
-                          fit: BoxFit.fill,
-                        )
-                            :Image.asset(
-                          "assets/Images/background_pic_image",
-                          fit: BoxFit.fill,
-                        ),
                       ),
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: Column(
+                    )
+                        : Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  '${widget.product.productName}',
-                                  style: GoogleFonts.poppins(
-                                      color: blueGrey, fontWeight: FontWeight.bold),
+                                Text('Rs ${widget.product.discountedPrice ?? widget.product.price}',
+                                    style: GoogleFonts.poppins(color: orange)),
+                                SizedBox(
+                                  width: getProportionateScreenWidth(4),
                                 ),
-                                Text(
-                                  '${widget.product.description}',
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 2,
-                                  style: GoogleFonts.poppins(
-                                      fontSize: 10, color: blueGrey),
-                                ),
+                                (widget.product.discountedPrice != null && widget.product.discountedPrice != 0)
+                                    ? Text('Rs ${widget.product.price}',
+                                    style: GoogleFonts.poppins(
+                                      color: Colors.grey,
+                                      fontSize: 12,
+                                      decoration: TextDecoration.lineThrough,
+                                    ))
+                                    :SizedBox(height: 0.0,width: 0.0,)
                               ],
                             ),
                           ),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-              (widget.product.quantity ?? 0) < 1
-                  ? Align(
-                alignment: Alignment.bottomCenter,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Rs ${widget.product.discountedPrice ?? widget.product.price}',
-                              style: GoogleFonts.poppins(color: orange)),
-                          SizedBox(
-                            width: getProportionateScreenWidth(4),
-                          ),
-                          (widget.product.discountedPrice != null && widget.product.discountedPrice != 0)
-                              ? Text('Rs ${widget.product.price}',
-                              style: GoogleFonts.poppins(
-                                color: Colors.grey,
-                                fontSize: 12,
-                                decoration: TextDecoration.lineThrough,
-                              ))
-                              :SizedBox(height: 0.0,width: 0.0,)
+                          InkWell(
+                            onTap: () {
+                              widget.add!();
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 1),
+                              child: Container(
+                                height: getProportionateScreenHeight(35),
+                                width: getProportionateScreenWidth(35),
+                                padding: EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                  color: orange,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(15),
+                                    bottomRight: Radius.circular(15),
+                                  ),
+                                ),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: white,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Center(
+                                    child: SvgPicture.asset(
+                                      "assets/Icons/addIcon.svg",
+                                      width: 10,
+                                      color: orange,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
                         ],
                       ),
                     ),
-                    InkWell(
-                      onTap: () {
-                        widget.add!();
-                        setState(() {
-                          isPresent = true;
-                        });
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 1),
-                        child: Container(
-                          height: getProportionateScreenHeight(35),
-                          width: getProportionateScreenWidth(35),
-                          padding: EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            color: orange,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(15),
-                              bottomRight: Radius.circular(15),
-                            ),
-                          ),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: white,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Center(
-                              child: SvgPicture.asset(
-                                "assets/Icons/addIcon.svg",
-                                width: 10,
-                                color: orange,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              )
-                  : isPresent
-                  ? Align(
-                alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 1),
-                  child: Container(
-                    padding: EdgeInsets.all(2),
-                    decoration: BoxDecoration(
-                      color: orange,
-                      boxShadow: [
-                        BoxShadow(
-                            color: grey.withOpacity(.4),
-                            blurRadius: 5,
-                            offset: Offset(0, -3))
-                      ],
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(15),
-                        bottomRight: Radius.circular(15),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        InkWell(
-                            onTap: () {
-                              widget.subtract!();
-                              if (HiveServices.getQuantity(widget.product,items)! > 0) {
-                                setState(() {
-                                  isPresent = false;
-                                });
-                              }
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.all(10),
-                              height: getProportionateScreenHeight(30),
-                              width: getProportionateScreenWidth(30),
-                              child: SvgPicture.asset(
-                                  'assets/Icons/remove.svg',
-                                  width: 10),
-                            )),
-                        Text(
-                          HiveServices.getQuantity(widget.product,items).toString(),
-                          style: GoogleFonts.poppins(
-                              color: white, fontWeight: FontWeight.bold),
-                        ),
-                        InkWell(
-                            onTap: () {
-                              widget.addQuantity!();
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.all(5),
-                              height: getProportionateScreenHeight(30),
-                              width: getProportionateScreenWidth(30),
-                              child: SvgPicture.asset(
-                                  'assets/Icons/addIcon.svg'),
-                            )),
-                      ],
-                    ),
-                  ),
-                ),
-              )
-                  : Align(
-                alignment: Alignment.bottomCenter,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Rs ${widget.product.discountedPrice ?? widget.product.price}',
-                              style: GoogleFonts.poppins(color: orange)),
-                          SizedBox(
-                            width: getProportionateScreenWidth(4),
-                          ),
-                          (widget.product.discountedPrice != null && widget.product.discountedPrice != 0)
-                              ? Text('Rs ${widget.product.price}',
-                              style: GoogleFonts.poppins(
-                                color: Colors.grey,
-                                fontSize: 12,
-                                decoration: TextDecoration.lineThrough,
-                              ))
-                              :SizedBox(height: 0.0,width: 0.0,)
-                        ],
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        widget.add!();
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 1),
-                        child: Container(
-                          height: getProportionateScreenHeight(35),
-                          width: getProportionateScreenWidth(35),
-                          padding: EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            color: orange,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(15),
-                              bottomRight: Radius.circular(15),
-                            ),
-                          ),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: white,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Center(
-                              child: SvgPicture.asset(
-                                "assets/Icons/addIcon.svg",
-                                width: 10,
-                                color: orange,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    )
                   ],
                 ),
               ),
-            ],
+            ),
           );
         });
 

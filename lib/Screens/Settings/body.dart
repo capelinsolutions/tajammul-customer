@@ -433,10 +433,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                                                           "${env.config
                                                               ?.imageUrl}$_imagePath",
                                                         fit: BoxFit.fill,)
-                                                          : Image.asset(
-                                                        "assets/Images/background_pic_image",
-                                                        fit: BoxFit.cover,
-                                                      ),
+                                                          : SvgPicture.asset("assets/Icons/avatar1.svg",height: getProportionateScreenHeight(50),width: getProportionateScreenWidth(50),)
                                                     ),
                                                   ),
                                                 ),

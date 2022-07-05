@@ -83,8 +83,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
   }
 
   //on checkout press
-  checkoutOrder(List<String> categories, List<CartProduct> cartProduct,
-      Box<HiveProduct> items) async {
+  checkoutOrder(List<String> categories, List<CartProduct> cartProduct, Box<HiveProduct> items) async {
     setState(() {
       _processing = true;
     });
@@ -144,8 +143,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
       });
     } else {
       if ((result?.containsKey("data"))!) {
-        HiveServices.initializeCartList(
-            cartProductFromJson((result?["data"])!), items);
+        HiveServices.initializeCartList(cartProductFromJson((result?["data"])!), items);
         displaySnackMessage((result?["error"])!);
         setState(() {
           _processing = true;
@@ -353,9 +351,12 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                                                             onWillPop: () async => false,
                                                             child: CustomDialog(
                                                               message: "Are you sure? you want to remove??",
-                                                              firstLabelButton: "Yes",
-                                                              secondButtonLabel: "No",
+                                                              firstLabelButton: "No",
+                                                              secondButtonLabel: "Yes",
                                                               onFirstPressed: () async {
+                                                                Navigator.pop(context);
+                                                              },
+                                                              onSecondPressed: () async {
                                                                 String? category;
                                                                 hp.categoryProduct?.forEach((key, value) {
                                                                   if (value.contains(hp.cartData?[index].productName)) {
@@ -367,9 +368,6 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                                                                 Provider.of<UpdateIndexProvider>(context, listen: false).setIndex(0);
                                                                 Navigator.pushNamed(context, TabsScreen.routeName);
                                                                 Provider.of<UserProvider>(context, listen: false).isOnCheckout(false);
-                                                              },
-                                                              onSecondPressed: () async {
-                                                                Navigator.pop(context);
                                                               },
                                                               imagePath: 'assets/Images/warningUpdate.svg',
                                                             ));
@@ -397,65 +395,30 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                                                   showDialog(
                                                       context: context,
                                                       barrierDismissible: false,
-                                                      builder: (BuildContext
-                                                          context) {
+                                                      builder: (BuildContext context) {
                                                         return WillPopScope(
-                                                            onWillPop:
-                                                                () async =>
-                                                                    false,
+                                                            onWillPop: () async => false,
                                                             child: CustomDialog(
-                                                              message:
-                                                                  "Are you sure? you want to remove??",
-                                                              firstLabelButton:
-                                                                  "Yes",
-                                                              secondButtonLabel:
-                                                                  "No",
-                                                              onFirstPressed:
-                                                                  () async {
-                                                                String?
-                                                                    category;
-                                                                hp.categoryProduct
-                                                                    ?.forEach((key,
-                                                                        value) {
-                                                                  if (value.contains(hp
-                                                                      .cartData?[
-                                                                          index]
-                                                                      .productName)) {
-                                                                    category =
-                                                                        key;
+                                                              message: "Are you sure? you want to remove??",
+                                                              firstLabelButton: "No",
+                                                              secondButtonLabel: "Yes",
+                                                              onFirstPressed: () async {
+                                                                Navigator.pop(context);
+                                                              },
+                                                              onSecondPressed: () async {
+                                                                String? category;
+                                                                hp.categoryProduct?.forEach((key, value) {
+                                                                  if (value.contains(hp.cartData?[index].productName)) {
+                                                                    category = key;
                                                                   }
                                                                 });
-                                                                HiveServices.removeProduct(
-                                                                    (hp.cartData?[
-                                                                        index])!,
-                                                                    category!,
-                                                                    items);
-                                                                Navigator.pop(
-                                                                    context);
-                                                                Provider.of<UpdateIndexProvider>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .setIndex(
-                                                                        0);
-                                                                Navigator.pushNamed(
-                                                                    context,
-                                                                    TabsScreen
-                                                                        .routeName);
-                                                                Provider.of<UserProvider>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .isOnCheckout(
-                                                                        false);
+                                                                HiveServices.removeProduct((hp.cartData?[index])!, category!, items);
+                                                                Navigator.pop(context);
+                                                                Provider.of<UpdateIndexProvider>(context, listen: false).setIndex(0);
+                                                                Navigator.pushNamed(context, TabsScreen.routeName);
+                                                                Provider.of<UserProvider>(context, listen: false).isOnCheckout(false);
                                                               },
-                                                              onSecondPressed:
-                                                                  () async {
-                                                                Navigator.pop(
-                                                                    context);
-                                                              },
-                                                              imagePath:
-                                                                  'assets/Images/warningUpdate.svg',
+                                                              imagePath: 'assets/Images/warningUpdate.svg',
                                                             ));
                                                       });
                                                 }
@@ -730,7 +693,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                                 height: getProportionateScreenHeight(10.0),
                               ),
                               Text(
-                                "You don't have any Products yet",
+                                "Empty!!",
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.poppins(
                                     fontSize: 16,
@@ -738,7 +701,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                                     fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                "You can add items in the cart",
+                                "You haven't added anything in the cart",
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.poppins(
                                     fontSize: 14,
