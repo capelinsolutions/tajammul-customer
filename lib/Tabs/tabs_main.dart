@@ -157,9 +157,8 @@ class _TabScreenState extends State<TabsScreen> with SingleTickerProviderStateMi
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
       final route = message.data['route'];
       if(route == "order" || route == "booking"){
-        LocalNotificationFlutter.display(message);
         //HiveServices.removeAll();
-        //Provider.of<UpdateIndexProvider>(context,listen: false).setIndex(2);
+        Provider.of<UpdateIndexProvider>(context,listen: false).setIndex(2);
         //Navigator.of(context).pushNamed(TabsScreen.routeName);
       }
     });

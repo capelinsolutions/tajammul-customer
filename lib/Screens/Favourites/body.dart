@@ -391,8 +391,8 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                                                 },
                                                 color: orange,
                                               ),
-                                            )
-                                          )
+                                            ),
+                                          ),
                                     ],
                                   ),
                                 ),
@@ -406,6 +406,7 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                   ),
                 ),
               ),
+
               SafeArea(
                 child: Padding(
                   padding: const EdgeInsets.all(5.0),
