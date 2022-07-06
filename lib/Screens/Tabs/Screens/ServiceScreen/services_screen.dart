@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:tajammul_customer_app/Tabs/Screens/ServiceScreen/body.dart';
+import '../ServiceScreen/body.dart';
 
 
 class ServiceScreen extends StatelessWidget {

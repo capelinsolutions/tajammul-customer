@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:tajammul_customer_app/Models/Business.dart';
 import 'package:tajammul_customer_app/Models/Timings.dart';
 import 'package:tajammul_customer_app/SizeConfig.dart';
 import 'package:tajammul_customer_app/colors.dart';
-
-import '../../../../Models/Business.dart';
-import '../../../../main.dart';
+import 'package:tajammul_customer_app/main.dart';
 
 class CustomCard extends StatefulWidget {
   final Business? business;

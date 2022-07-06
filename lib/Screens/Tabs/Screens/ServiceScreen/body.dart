@@ -3,17 +3,17 @@ import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:tajammul_customer_app/Components/CustomDialog.dart';
+import 'package:tajammul_customer_app/Components/Loader.dart';
 import 'package:tajammul_customer_app/Models/Business.dart';
+import 'package:tajammul_customer_app/Models/Debouncer.dart';
 import 'package:tajammul_customer_app/Providers/userProvider.dart';
+import 'package:tajammul_customer_app/Screens/Service/dashboard_service_main.dart';
+import 'package:tajammul_customer_app/Services/ApiCalls.dart';
+import 'package:tajammul_customer_app/Services/loginUserCredentials.dart';
 import 'package:tajammul_customer_app/SizeConfig.dart';
 import 'package:tajammul_customer_app/colors.dart';
 import '../../../../Components/CustomSearchTextField.dart';
-import '../../../Components/CustomDialog.dart';
-import '../../../Components/Loader.dart';
-import '../../../Models/Debouncer.dart';
-import '../../../Screens/Service/dashboard_service_main.dart';
-import '../../../Services/ApiCalls.dart';
-import '../../../Services/loginUserCredentials.dart';
 import '../ShopScreen/Components/custom_card.dart';
 
 class Body extends StatefulWidget {

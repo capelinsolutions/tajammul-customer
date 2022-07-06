@@ -6,7 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:tajammul_customer_app/Models/HiveProduct.dart';
-import 'package:tajammul_customer_app/Tabs/tabs_main.dart';
+import 'package:tajammul_customer_app/Screens/Tabs/tabs_main.dart';
 import '../../Components/CustomButton.dart';
 import '../../Components/CustomTextField.dart';
 import '../../Components/Loader.dart';

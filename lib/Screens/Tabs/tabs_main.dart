@@ -8,25 +8,25 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 import 'package:tajammul_customer_app/Components/Loader.dart';
+import 'package:tajammul_customer_app/Models/AddressData.dart';
+import 'package:tajammul_customer_app/Models/Business.dart';
 import 'package:tajammul_customer_app/Models/HiveProduct.dart';
+import 'package:tajammul_customer_app/Models/PlacesDetails.dart';
+import 'package:tajammul_customer_app/Models/users.dart';
 import 'package:tajammul_customer_app/Providers/UpdateIndexProvider.dart';
+import 'package:tajammul_customer_app/Providers/userProvider.dart';
+import 'package:tajammul_customer_app/Screens/Checkout/checkout_main.dart';
+import 'package:tajammul_customer_app/Screens/Dashboard/Components/sidemenu.dart';
+import 'package:tajammul_customer_app/Services/ApiCalls.dart';
 import 'package:tajammul_customer_app/Services/HiveServices.dart';
+import 'package:tajammul_customer_app/Services/LocalNotificationFlutter.dart';
+import 'package:tajammul_customer_app/UserConstant.dart';
 import '../../Components/CustomDialog.dart';
 import '../../Services/loginUserCredentials.dart';
 import '../../SizeConfig.dart';
 import '../../colors.dart';
-import '../Models/AddressData.dart';
-import '../Models/Business.dart';
-import '../Models/PlacesDetails.dart';
-import '../Models/users.dart';
-import '../Providers/userProvider.dart';
-import '../Screens/Checkout/checkout_main.dart';
-import '../Screens/Dashboard/Components/sidemenu.dart';
-import '../Services/ApiCalls.dart';
+import '../Tabs/body.dart';
 import 'package:location/location.dart' as loc;
-import 'package:tajammul_customer_app/Tabs/body.dart';
-import '../Services/LocalNotificationFlutter.dart';
-import '../UserConstant.dart';
 
 
 class TabsScreen extends StatefulWidget {

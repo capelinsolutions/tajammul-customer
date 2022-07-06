@@ -15,38 +15,13 @@ import 'package:tajammul_customer_app/Screens/Settings/components/ChangePassword
 import 'package:tajammul_customer_app/Screens/Settings/settings_screen.dart';
 import 'package:tajammul_customer_app/Screens/SignIn/sign_in_main.dart';
 import 'package:tajammul_customer_app/Screens/Signup/signup_main.dart';
+import 'package:tajammul_customer_app/Screens/Tabs/Screens/ServiceScreen/services_screen.dart';
+import 'package:tajammul_customer_app/Screens/Tabs/Screens/ShopScreen/shop_screen.dart';
+import 'package:tajammul_customer_app/Screens/Tabs/tabs_main.dart';
 import 'Screens/AddAddress/Components/PrivacyPolicy.dart';
 import 'Screens/Shop/dashboard_screen_main.dart';
 import 'Screens/Shop/screens/product_details.dart';
 import 'Services/CustomPageRoute.dart';
-import 'Tabs/Screens/ServiceScreen/services_screen.dart';
-import 'Tabs/Screens/ShopScreen/shop_screen.dart';
-import 'Tabs/tabs_main.dart';
-
-/*
-final Map<String, WidgetBuilder> routes = {
-  SplashScreen.routeName: (context) => const SplashScreen(),
-  InfoScreen.routeName: (context) => InfoScreen(),
-  SignInScreen.routeName: (context) => SignInScreen(),
-  TabsScreen.routeName: (context) => TabsScreen(),
-  DashboardScreen.routeName: (context) => DashboardScreen(),
-  ProfileScreen.routeName: (context) => ProfileScreen(),
-  HistoryScreen.routeName: (context) => HistoryScreen(),
-  NotificationsScreen.routeName: (context) => NotificationsScreen(),
-  ShopScreen.routeName: (context) => ShopScreen(),
-  ServiceScreen.routeName: (context) => ServiceScreen(),
-  ShopDashboardScreen.routeName: (context) => ShopDashboardScreen(),
-  ProductDetails.routeName: (context) => ProductDetails(),
-  CheckoutScreen.routeName: (context) => CheckoutScreen(),
-  AddAddressScreen.routeName: (context) => AddAddressScreen(),
-  ServiceDashboardScreen.routeName: (context) => ServiceDashboardScreen(),
-  SettingsScreen.routeName: (context) => SettingsScreen(),
-  SignUpScreen.routeName: (context) => SignUpScreen(),
-  ChangePassword.routeName: (context) => ChangePassword(),
-  PrivacyPolicy.routeName: (context) => PrivacyPolicy(),
-  SavedAddresses.routeName: (context) => SavedAddresses(),
-  FavouritesScreen.routeName: (context) => FavouritesScreen()
-};*/
 
 class Routes{
   static Route? onGenerateRoute(RouteSettings settings){

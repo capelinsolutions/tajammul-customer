@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:tajammul_customer_app/Components/CustomButton.dart';
+import 'package:tajammul_customer_app/Screens/Tabs/tabs_main.dart';
 import '../../../../../Screens/Dashboard/body.dart';
 import '../../../../../SizeConfig.dart';
 import '../../../../../colors.dart';
@@ -23,7 +24,6 @@ import '../../../Providers/UpdateIndexProvider.dart';
 import '../../../Providers/userProvider.dart';
 import '../../../Services/ApiCalls.dart';
 import '../../../Services/loginUserCredentials.dart';
-import '../../../Tabs/tabs_main.dart';
 import '../../../main.dart';
 
 class Body extends StatefulWidget {
