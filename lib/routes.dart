@@ -7,7 +7,6 @@ import 'package:tajammul_customer_app/Screens/Dashboard/dashboard_main.dart';
 import 'package:tajammul_customer_app/Screens/Favourites/favourites_screen.dart';
 import 'package:tajammul_customer_app/Screens/History/history_main.dart';
 import 'package:tajammul_customer_app/Screens/Info/info_main.dart';
-import 'package:tajammul_customer_app/Screens/InternetConnectivity/no_internet.dart';
 import 'package:tajammul_customer_app/Screens/Notifications/notifications_main.dart';
 import 'package:tajammul_customer_app/Screens/Profile/profile_main.dart';
 import 'package:tajammul_customer_app/Screens/Service/dashboard_service_main.dart';
@@ -85,9 +84,6 @@ class Routes{
             settings: settings);
       case FavouritesScreen.routeName:
         return CustomPageRoute(child:FavouritesScreen(),
-            settings: settings);
-      case NoInternet.routeName:
-        return CustomPageRoute(child:NoInternet(),
             settings: settings);
       default:
         return null;
