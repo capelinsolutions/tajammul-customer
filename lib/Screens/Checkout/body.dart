@@ -326,8 +326,8 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                                           clipBehavior: Clip.none,
                                           shrinkWrap: true,
                                           reverse: true,
+                                          physics: NeverScrollableScrollPhysics(),
                                           itemCount: items.getAt(0)!.cartData!.length,
-                                          scrollDirection: Axis.vertical,
                                           itemBuilder: (BuildContext context, int index) {
                                             return CheckoutItemsList(
                                               product: (items.getAt(0)!.cartData![index]),
@@ -701,7 +701,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                                     fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                "You haven't added anything in the cart",
+                                "You haven't added anything to your cart!",
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.poppins(
                                     fontSize: 14,

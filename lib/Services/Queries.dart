@@ -1005,7 +1005,6 @@ query getOrdersByCustomerAndStatus(\$customerId: String!,\$status: String!,\$pag
   }
   """;
 
-
   //get shops according to the address
   static String calculateBusinessesWithinRange = """
   query calculateBusinessesWithinRange(\$userId: String!){

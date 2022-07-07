@@ -1,7 +1,8 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:expandable_bottom_sheet/expandable_bottom_sheet.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -194,7 +195,9 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
             widget.business!.businessId!, categoryName, pageNo, noOfElements);
     if (result?["error"] == null) {
       setState(() {
-        _productList = productFromJson((result?["success"])!).where((element) => element.status == STATUS_PRODUCT_AVAILABLE).toList();
+        _productList = productFromJson((result?["success"])!)
+            .where((element) => element.status != STATUS_PRODUCT_UNAVAILABLE)
+            .toList();
         _totalPages = int.parse((result?["totalPages"])!);
         this.pageNo++;
       });
@@ -239,13 +242,16 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
     });
   }
 
-  getLoadMoreProductsByCategoryInBusiness(String categoryName, int pageNo) async {
+  getLoadMoreProductsByCategoryInBusiness(
+      String categoryName, int pageNo) async {
     Map<String, String>? result =
         await ApiCalls.getProductsByCategoryInBusiness(
             widget.business!.businessId!, categoryName, pageNo, noOfElements);
     if (result?["error"] == null) {
       setState(() {
-        _productList.addAll(productFromJson((result?["success"])!));
+        _productList.addAll(productFromJson((result?["success"])!)
+            .where((element) => element.status != STATUS_PRODUCT_UNAVAILABLE)
+            .toList());
         _totalPages = int.parse((result?["totalPages"])!);
         this.pageNo++;
       });
@@ -298,6 +304,13 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
     if (result?["error"] == null) {
       setState(() {
         _searchProductList = searchProductsFromJson((result?["success"])!);
+        log((_searchProductList[0]
+                .products
+                ?.where(
+                    (element) => element.status != STATUS_PRODUCT_UNAVAILABLE)
+                .toList()
+                .length)
+            .toString());
       });
     } else if (result?["error"] == "Session Expired") {
       await _credentials.getCurrentUser();
@@ -418,13 +431,13 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
         return ExpandableBottomSheet(
           onIsContractedCallback: () {
             //contractedCall();
-            setState((){
+            setState(() {
               isExpanded = false;
             });
           },
           onIsExtendedCallback: () {
             //expandedCall();
-            setState((){
+            setState(() {
               isExpanded = true;
             });
           },
@@ -639,7 +652,9 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                             !_isSearching
                                 ? TabBar(
                                     tabs: [
-                                      for (int i = 0; i < _getCategoriesList.length; i++)
+                                      for (int i = 0;
+                                          i < _getCategoriesList.length;
+                                          i++)
                                         SizedBox(
                                           height: getProportionateScreenHeight(
                                               22.0),
@@ -688,300 +703,380 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                                     height: 0.0,
                                   ),
                             !_isSearching
-                                    ? Expanded(
-                                      child: GestureDetector(
-                              behavior: HitTestBehavior.opaque,
-                              onHorizontalDragEnd:
-                                  (DragEndDetails details) {
-                                if (details.velocity.pixelsPerSecond.dx <
-                                      0.0) {
-                                  if (_selectedIndex <
-                                        _getCategoriesList.length -
-                                            1) {
-                                      _selectedIndex =
-                                          _selectedIndex + 1;
-                                      pageNo = 0;
-                                      _totalPages = 0;
-                                      _currentCategory =
-                                      _getCategoriesList[
-                                      _selectedIndex];
-                                      HiveServices.setCategory(
-                                          _currentCategory!, items);
-                                      getProductsByCategoryInBusiness(
-                                          _currentCategory!, pageNo);
-                                      _tabController
-                                          ?.animateTo(_selectedIndex);
-                                      getProductWishList();
-                                      isUpdate = false;
-                                  }
-                                } else {
-                                  if (_selectedIndex > 0) {_selectedIndex = _selectedIndex - 1;
-                                      pageNo = 0;
-                                      _totalPages = 0;
-                                      _currentCategory =
-                                      _getCategoriesList[
-                                      _selectedIndex];
-                                      HiveServices.setCategory(
-                                          _currentCategory!, items);
-                                      getProductsByCategoryInBusiness(
-                                          _currentCategory!, pageNo);
-                                      _tabController
-                                          ?.animateTo(_selectedIndex);
-                                      getProductWishList();
-                                      isUpdate = false;
-                                  }
-                                }
-                              },
-                                        child: (_getCategoriesList.isEmpty || _productList.isEmpty)
-                                            ? Center(
-                                          child: Column(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                            children: [
-                                              SvgPicture.asset(
-                                                "assets/Icons/search_icon.svg",
-                                                color: blueGrey,
-                                                width: 20.0,
-                                              ),
-                                              SizedBox(
-                                                height:
-                                                getProportionateScreenHeight(
-                                                    20.0),
-                                              ),
-                                              Text(
-                                                "This category have no products yet",
-                                                textAlign: TextAlign.center,
-                                                style: GoogleFonts.poppins(
-                                                    fontSize: 13,
+                                ? Expanded(
+                                    child: GestureDetector(
+                                      behavior: HitTestBehavior.opaque,
+                                      onHorizontalDragEnd:
+                                          (DragEndDetails details) {
+                                        if (details
+                                                .velocity.pixelsPerSecond.dx <
+                                            0.0) {
+                                          if (_selectedIndex <
+                                              _getCategoriesList.length - 1) {
+                                            _selectedIndex = _selectedIndex + 1;
+                                            pageNo = 0;
+                                            _totalPages = 0;
+                                            _currentCategory =
+                                                _getCategoriesList[
+                                                    _selectedIndex];
+                                            HiveServices.setCategory(
+                                                _currentCategory!, items);
+                                            getProductsByCategoryInBusiness(
+                                                _currentCategory!, pageNo);
+                                            _tabController
+                                                ?.animateTo(_selectedIndex);
+                                            getProductWishList();
+                                            isUpdate = false;
+                                          }
+                                        } else {
+                                          if (_selectedIndex > 0) {
+                                            _selectedIndex = _selectedIndex - 1;
+                                            pageNo = 0;
+                                            _totalPages = 0;
+                                            _currentCategory =
+                                                _getCategoriesList[
+                                                    _selectedIndex];
+                                            HiveServices.setCategory(
+                                                _currentCategory!, items);
+                                            getProductsByCategoryInBusiness(
+                                                _currentCategory!, pageNo);
+                                            _tabController
+                                                ?.animateTo(_selectedIndex);
+                                            getProductWishList();
+                                            isUpdate = false;
+                                          }
+                                        }
+                                      },
+                                      child: (_getCategoriesList.isEmpty ||
+                                              _productList.isEmpty)
+                                          ? Center(
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  SvgPicture.asset(
+                                                    "assets/Icons/search_icon.svg",
                                                     color: blueGrey,
-                                                    fontWeight: FontWeight.bold),
+                                                    width: 20.0,
+                                                  ),
+                                                  SizedBox(
+                                                    height:
+                                                        getProportionateScreenHeight(
+                                                            20.0),
+                                                  ),
+                                                  Text(
+                                                    "This category have no products yet",
+                                                    textAlign: TextAlign.center,
+                                                    style: GoogleFonts.poppins(
+                                                        fontSize: 13,
+                                                        color: blueGrey,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  Text(
+                                                    "It will soon to be uploaded",
+                                                    textAlign: TextAlign.center,
+                                                    style: GoogleFonts.poppins(
+                                                        fontSize: 12,
+                                                        color: blueGrey
+                                                            .withOpacity(0.5),
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ],
                                               ),
-                                              Text(
-                                                "It will soon to be uploaded",
-                                                textAlign: TextAlign.center,
-                                                style: GoogleFonts.poppins(
-                                                    fontSize: 12,
-                                                    color:
-                                                    blueGrey.withOpacity(0.5),
-                                                    fontWeight: FontWeight.bold),
-                                              ),
-                                            ],
-                                          ),
-                                        ) : LazyLoadScrollView(
-                                            scrollOffset: 100,
-                                            scrollDirection: Axis.vertical,
-                                            onEndOfPage: () {
-                                              if (pageNo < _totalPages) {
-                                                getLoadMoreProductsByCategoryInBusiness(
-                                                    _currentCategory!, pageNo);
-                                              }
-                                            },
-                                            child: GridView.builder(
-                                              controller: _scrollController,
-                                              padding: const EdgeInsets.only(
-                                                left: 15,
-                                                top: 10,
-                                                right: 15,
-                                                bottom: 10,
-                                              ),
-                                              shrinkWrap: true,
-                                              gridDelegate:
-                                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                                crossAxisCount: 2,
-                                                childAspectRatio: 1 / 1.6,
-                                                mainAxisSpacing: 15,
-                                                crossAxisSpacing: 10,
-                                              ),
-                                              itemCount: _productList.length,
-                                              itemBuilder: (BuildContext context, int index) {
-                                                return ProductItemsList(
-                                                  onTap: () {
-                                                  FocusScope.of(context).unfocus();
-                                                  Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDetails(product: _productList[index], business: widget.business,)));
-                                                  HiveServices.setCategory(_currentCategory!, items);
-                                                },
-                                                  product: _productList[index],
-                                                  business: widget.business!,
-                                                  favList: favList,
-                                                  isUpdate: isUpdate,
-                                                  categoryName: _currentCategory!,
-                                                  refresh: () {
-                                                    pageNo = 0;
-                                                    getProductsByCategoryInBusiness(_currentCategory!, pageNo);
-                                                    HiveServices.setCategory(_currentCategory!, items);
-                                                  },
-                                                  processing: (value) {
-                                                    setState(() {
-                                                      processing = value;
-                                                    });
-                                                  },
-                                                  add: () {
-                                                    List<CartProduct>?
-                                                        cartList = items
-                                                            .getAt(0)
-                                                            ?.cartData;
-                                                    bool isFound = false;
-                                                    int? cartItemIndex;
-                                                    int? quantity;
-                                                    if (cartList!.isEmpty) {
-                                                      HiveServices
-                                                          .setBusiness(
-                                                              widget
-                                                                  .business!,
-                                                              items);
-                                                    }
-                                                    if (items.getAt(0)?.business!.businessId == widget.business!.businessId) {
-                                                      for (int i = 0; i < cartList.length; i++) {
-                                                        if (cartList[i].productName == _productList[index].productName) {
-                                                          cartItemIndex = i;
-                                                          quantity = cartList[i].quantity;
-                                                          isFound = true;
-                                                          break;
-                                                        }
-                                                      }
-                                                      if (_productList[index].status != STATUS_PRODUCT_UNAVAILABLE) {
-                                                        if (!isFound) {
-                                                          if ((_productList[index].quantity)! > 0) {
-                                                            CartProduct cartProduct = CartProduct(
-                                                                price: _productList[index].price,
-                                                                productName: _productList[index].productName,
-                                                                discount: _productList[index].discount,
-                                                                discountedPrice: _productList[index].discountedPrice,
-                                                                listImagePath: _productList[index].listImagePath,
-                                                                updatedStock: _productList[index].quantity,
-                                                                quantity: 1);
-                                                            HiveServices.setCategory(_currentCategory!, items);
-                                                            HiveServices.addProduct(cartProduct, _currentCategory!, items);
-                                                            HiveServices.addCategory(_currentCategory!, items);
-                                                            getCartTray();
-                                                          }
-                                                          else {
-                                                            displaySnackMessage(
-                                                                "Product is out of stock");
-                                                          }
-                                                        } else {
-                                                          if (quantity! <= (_productList[index].quantity)!) {
-                                                            HiveServices.addQuantity(cartItemIndex!, items);
-                                                            HiveServices.setCategory(_currentCategory!, items);
-                                                            HiveServices.addCategory(_currentCategory!, items);
-                                                            getCartTray();
-                                                          } else {
-                                                            displaySnackMessage(
-                                                                "You can't add more");
-                                                          }
-                                                        }
-                                                        setState(() {
-                                                          expansion = true;
-                                                        });
-                                                      } else {
-                                                        displaySnackMessage(
-                                                            "You Can't Add Unavailable Product");
-                                                      }
-                                                    } else {
-                                                      Fluttertoast.showToast(
-                                                          msg:
-                                                              "You can't add product from different shop. Remove items first!",
-                                                          toastLength: Toast
-                                                              .LENGTH_LONG,
-                                                          gravity:
-                                                              ToastGravity
-                                                                  .BOTTOM,
-                                                          timeInSecForIosWeb:
-                                                              1,
-                                                          backgroundColor:
-                                                              orange,
-                                                          textColor:
-                                                              Colors.white,
-                                                          fontSize: 15.0);
-                                                    }
-                                                  },
-                                                  addQuantity: () {
-                                                    int? cartItemIndex;
-                                                    for (int i = 0;
-                                                        i <
-                                                            items
-                                                                .getAt(0)!
-                                                                .cartData!
-                                                                .length;
-                                                        i++) {
-                                                      if (items
-                                                              .getAt(0)!
-                                                              .cartData![i]
-                                                              .productName ==
-                                                          _productList[index]
-                                                              .productName) {
-                                                        cartItemIndex = i;
-                                                        break;
-                                                      }
-                                                    }
-                                                    if ((items
-                                                            .getAt(0)!
-                                                            .cartData?[
-                                                                cartItemIndex!]
-                                                            .quantity)! <
-                                                        (items
-                                                            .getAt(0)!
-                                                            .cartData?[
-                                                                cartItemIndex!]
-                                                            .updatedStock)!) {
-                                                      HiveServices
-                                                          .addQuantity(
-                                                              cartItemIndex!,
-                                                              items);
-                                                      getCartTray();
-                                                    } else {
-                                                      displaySnackMessage(
-                                                          "You can't add more");
-                                                    }
-                                                  },
-                                                  subtract: () {
-                                                    int? cartItemIndex;
-                                                    for (int i = 0;
-                                                        i <
-                                                            items
-                                                                .getAt(0)!
-                                                                .cartData!
-                                                                .length;
-                                                        i++) {
-                                                      if (items
-                                                              .getAt(0)!
-                                                              .cartData![i]
-                                                              .productName ==
-                                                          _productList[index]
-                                                              .productName) {
-                                                        cartItemIndex = i;
-                                                        break;
-                                                      }
-                                                    }
-                                                    if ((items
-                                                            .getAt(0)!
-                                                            .cartData?[
-                                                                cartItemIndex!]
-                                                            .quantity)! <=
-                                                        (items
-                                                            .getAt(0)!
-                                                            .cartData?[
-                                                                cartItemIndex!]
-                                                            .updatedStock)!) {
+                                            )
+                                          : LazyLoadScrollView(
+                                              scrollOffset: 100,
+                                              scrollDirection: Axis.vertical,
+                                              onEndOfPage: () {
+                                                if (pageNo < _totalPages) {
+                                                  getLoadMoreProductsByCategoryInBusiness(
+                                                      _currentCategory!,
+                                                      pageNo);
+                                                }
+                                              },
+                                              child: GridView.builder(
+                                                controller: _scrollController,
+                                                padding: const EdgeInsets.only(
+                                                  left: 15,
+                                                  top: 10,
+                                                  right: 15,
+                                                  bottom: 10,
+                                                ),
+                                                shrinkWrap: true,
+                                                gridDelegate:
+                                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                                  crossAxisCount: 2,
+                                                  childAspectRatio: 1 / 1.6,
+                                                  mainAxisSpacing: 15,
+                                                  crossAxisSpacing: 10,
+                                                ),
+                                                itemCount: _productList.length,
+                                                itemBuilder:
+                                                    (BuildContext context,
+                                                        int index) {
+                                                  return ProductItemsList(
+                                                    onTap: () {
+                                                      FocusScope.of(context)
+                                                          .unfocus();
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  ProductDetails(
+                                                                    product:
+                                                                        _productList[
+                                                                            index],
+                                                                    business: widget
+                                                                        .business,
+                                                                  )));
                                                       HiveServices.setCategory(
                                                           _currentCategory!,
                                                           items);
-                                                      HiveServices
-                                                          .subtractQuantity(
-                                                              cartItemIndex!,
-                                                              _currentCategory!,
-                                                              items);
-                                                    } else {
-                                                      displaySnackMessage(
-                                                          "You can't add more");
-                                                    }
-                                                  },
-                                                );
-                                              },
+                                                    },
+                                                    product:
+                                                        _productList[index],
+                                                    business: widget.business!,
+                                                    favList: favList,
+                                                    isUpdate: isUpdate,
+                                                    categoryName:
+                                                        _currentCategory!,
+                                                    refresh: () {
+                                                      pageNo = 0;
+                                                      getProductsByCategoryInBusiness(
+                                                          _currentCategory!,
+                                                          pageNo);
+                                                      HiveServices.setCategory(
+                                                          _currentCategory!,
+                                                          items);
+                                                    },
+                                                    processing: (value) {
+                                                      setState(() {
+                                                        processing = value;
+                                                      });
+                                                    },
+                                                    add: () {
+                                                      List<CartProduct>?
+                                                          cartList = items
+                                                              .getAt(0)
+                                                              ?.cartData;
+                                                      bool isFound = false;
+                                                      int? cartItemIndex;
+                                                      int? quantity;
+                                                      if (cartList!.isEmpty) {
+                                                        HiveServices
+                                                            .setBusiness(
+                                                                widget
+                                                                    .business!,
+                                                                items);
+                                                      }
+                                                      if (items
+                                                              .getAt(0)
+                                                              ?.business!
+                                                              .businessId ==
+                                                          widget.business!
+                                                              .businessId) {
+                                                        for (int i = 0;
+                                                            i < cartList.length;
+                                                            i++) {
+                                                          if (cartList[i]
+                                                                  .productName ==
+                                                              _productList[
+                                                                      index]
+                                                                  .productName) {
+                                                            cartItemIndex = i;
+                                                            quantity =
+                                                                cartList[i]
+                                                                    .quantity;
+                                                            isFound = true;
+                                                            break;
+                                                          }
+                                                        }
+                                                        if (_productList[index]
+                                                                .status !=
+                                                            STATUS_PRODUCT_UNAVAILABLE) {
+                                                          if (!isFound) {
+                                                            if ((_productList[
+                                                                        index]
+                                                                    .quantity)! >
+                                                                0) {
+                                                              CartProduct cartProduct = CartProduct(
+                                                                  price: _productList[
+                                                                          index]
+                                                                      .price,
+                                                                  productName:
+                                                                      _productList[
+                                                                              index]
+                                                                          .productName,
+                                                                  discount: _productList[
+                                                                          index]
+                                                                      .discount,
+                                                                  discountedPrice:
+                                                                      _productList[
+                                                                              index]
+                                                                          .discountedPrice,
+                                                                  listImagePath:
+                                                                      _productList[
+                                                                              index]
+                                                                          .listImagePath,
+                                                                  updatedStock:
+                                                                      _productList[
+                                                                              index]
+                                                                          .quantity,
+                                                                  quantity: 1);
+                                                              HiveServices
+                                                                  .setCategory(
+                                                                      _currentCategory!,
+                                                                      items);
+                                                              HiveServices.addProduct(
+                                                                  cartProduct,
+                                                                  _currentCategory!,
+                                                                  items);
+                                                              HiveServices
+                                                                  .addCategory(
+                                                                      _currentCategory!,
+                                                                      items);
+                                                              getCartTray();
+                                                            } else {
+                                                              displaySnackMessage(
+                                                                  "Product is out of stock");
+                                                            }
+                                                          } else {
+                                                            if (quantity! <=
+                                                                (_productList[
+                                                                        index]
+                                                                    .quantity)!) {
+                                                              HiveServices
+                                                                  .addQuantity(
+                                                                      cartItemIndex!,
+                                                                      items);
+                                                              HiveServices
+                                                                  .setCategory(
+                                                                      _currentCategory!,
+                                                                      items);
+                                                              HiveServices
+                                                                  .addCategory(
+                                                                      _currentCategory!,
+                                                                      items);
+                                                              getCartTray();
+                                                            } else {
+                                                              displaySnackMessage(
+                                                                  "You can't add more");
+                                                            }
+                                                          }
+                                                          setState(() {
+                                                            expansion = true;
+                                                          });
+                                                        } else {
+                                                          displaySnackMessage(
+                                                              "You Can't Add Unavailable Product");
+                                                        }
+                                                      } else {
+                                                        Fluttertoast.showToast(
+                                                            msg:
+                                                                "You can't add product from different shop. Remove items first!",
+                                                            toastLength: Toast
+                                                                .LENGTH_LONG,
+                                                            gravity:
+                                                                ToastGravity
+                                                                    .BOTTOM,
+                                                            timeInSecForIosWeb:
+                                                                1,
+                                                            backgroundColor:
+                                                                orange,
+                                                            textColor:
+                                                                Colors.white,
+                                                            fontSize: 15.0);
+                                                      }
+                                                    },
+                                                    addQuantity: () {
+                                                      int? cartItemIndex;
+                                                      for (int i = 0;
+                                                          i <
+                                                              items
+                                                                  .getAt(0)!
+                                                                  .cartData!
+                                                                  .length;
+                                                          i++) {
+                                                        if (items
+                                                                .getAt(0)!
+                                                                .cartData![i]
+                                                                .productName ==
+                                                            _productList[index]
+                                                                .productName) {
+                                                          cartItemIndex = i;
+                                                          break;
+                                                        }
+                                                      }
+                                                      if ((items
+                                                              .getAt(0)!
+                                                              .cartData?[
+                                                                  cartItemIndex!]
+                                                              .quantity)! <
+                                                          (items
+                                                              .getAt(0)!
+                                                              .cartData?[
+                                                                  cartItemIndex!]
+                                                              .updatedStock)!) {
+                                                        HiveServices
+                                                            .addQuantity(
+                                                                cartItemIndex!,
+                                                                items);
+                                                        getCartTray();
+                                                      } else {
+                                                        displaySnackMessage(
+                                                            "You can't add more");
+                                                      }
+                                                    },
+                                                    subtract: () {
+                                                      int? cartItemIndex;
+                                                      for (int i = 0;
+                                                          i <
+                                                              items
+                                                                  .getAt(0)!
+                                                                  .cartData!
+                                                                  .length;
+                                                          i++) {
+                                                        if (items
+                                                                .getAt(0)!
+                                                                .cartData![i]
+                                                                .productName ==
+                                                            _productList[index]
+                                                                .productName) {
+                                                          cartItemIndex = i;
+                                                          break;
+                                                        }
+                                                      }
+                                                      if ((items
+                                                              .getAt(0)!
+                                                              .cartData?[
+                                                                  cartItemIndex!]
+                                                              .quantity)! <=
+                                                          (items
+                                                              .getAt(0)!
+                                                              .cartData?[
+                                                                  cartItemIndex!]
+                                                              .updatedStock)!) {
+                                                        HiveServices.setCategory(
+                                                            _currentCategory!,
+                                                            items);
+                                                        HiveServices
+                                                            .subtractQuantity(
+                                                                cartItemIndex!,
+                                                                _currentCategory!,
+                                                                items);
+                                                      } else {
+                                                        displaySnackMessage(
+                                                            "You can't add more");
+                                                      }
+                                                    },
+                                                  );
+                                                },
+                                              ),
                                             ),
-                                          ),
-                                      ),
-                                    )
+                                    ),
+                                  )
                                 : _searchProductList.isEmpty
                                     ? SizedBox(
                                         height:
@@ -1028,6 +1123,13 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                                             scrollDirection: Axis.vertical,
                                             itemBuilder: (BuildContext context,
                                                 int upperIndex) {
+                                              List<Product>? _pList =
+                                                  _searchProductList[upperIndex]
+                                                      .products
+                                                      ?.where((element) =>
+                                                          element.status !=
+                                                          STATUS_PRODUCT_UNAVAILABLE)
+                                                      .toList();
                                               return GridView.builder(
                                                   controller: _scrollController,
                                                   padding:
@@ -1040,22 +1142,18 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                                                   gridDelegate:
                                                       SliverGridDelegateWithFixedCrossAxisCount(
                                                     crossAxisCount: 2,
-                                                    childAspectRatio: 1 / 1.55,
+                                                    childAspectRatio: 1 / 1.6,
                                                     mainAxisSpacing: 15,
                                                     crossAxisSpacing: 10,
                                                   ),
                                                   scrollDirection:
                                                       Axis.vertical,
-                                                  physics:
-                                                      NeverScrollableScrollPhysics(),
-                                                  itemCount: _searchProductList[
-                                                          upperIndex]
-                                                      .products
-                                                      ?.length,
+                                                  itemCount: _pList?.length,
                                                   itemBuilder:
                                                       (BuildContext context,
                                                           int lowerIndex) {
-                                                    return InkWell(
+                                                    return ProductItemsList(
+                                                      favList: favList,
                                                       onTap: () {
                                                         FocusScope.of(context)
                                                             .unfocus();
@@ -1066,251 +1164,190 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
                                                                     (context) =>
                                                                         ProductDetails(
                                                                           product:
-                                                                              _searchProductList[upperIndex].products![lowerIndex],
+                                                                              _pList?[lowerIndex],
                                                                           business:
                                                                               widget.business,
                                                                         )));
                                                       },
-                                                      child: ProductItemsList(
-                                                        favList: favList,
-                                                        business:
-                                                            widget.business!,
-                                                        isUpdate: isUpdate,
-                                                        product:
-                                                            _searchProductList[
-                                                                        upperIndex]
-                                                                    .products![
-                                                                lowerIndex],
-                                                        categoryName:
-                                                            _searchProductList[
-                                                                    upperIndex]
-                                                                .category!
-                                                                .categoryName!,
-                                                        refresh: () {
-                                                          getSearchProductsInBusiness(
-                                                              shopSearchController
-                                                                  .text);
-                                                        },
-                                                        processing: (value) {
-                                                          setState(() {
-                                                            processing = value;
-                                                          });
-                                                        },
-                                                        add: () {
-                                                          List<CartProduct>?
-                                                              cartList = items
-                                                                  .getAt(0)!
-                                                                  .cartData;
-                                                          bool isFound = false;
-                                                          int? cartItemIndex;
-                                                          int? quantity;
-                                                          for (int i = 0;
-                                                              i <
-                                                                  cartList!
-                                                                      .length;
-                                                              i++) {
-                                                            if (cartList[i]
-                                                                    .productName ==
-                                                                _searchProductList[
-                                                                        upperIndex]
-                                                                    .products![
-                                                                        lowerIndex]
-                                                                    .productName) {
-                                                              cartItemIndex = i;
-                                                              quantity =
-                                                                  cartList[i]
-                                                                      .quantity;
-                                                              isFound = true;
-                                                              break;
-                                                            }
+                                                      business:
+                                                          widget.business!,
+                                                      isUpdate: isUpdate,
+                                                      product:
+                                                          _pList![lowerIndex],
+                                                      categoryName:
+                                                          _searchProductList[upperIndex].category!
+                                                              .categoryName!,
+                                                      refresh: () {
+                                                        getSearchProductsInBusiness(
+                                                            shopSearchController
+                                                                .text);
+                                                      },
+                                                      processing: (value) {
+                                                        setState(() {
+                                                          processing = value;
+                                                        });
+                                                      },
+                                                      add: () {
+                                                        List<CartProduct>?
+                                                            cartList = items
+                                                                .getAt(0)!
+                                                                .cartData;
+                                                        bool isFound = false;
+                                                        int? cartItemIndex;
+                                                        int? quantity;
+                                                        for (int i = 0;
+                                                            i <
+                                                                cartList!
+                                                                    .length;
+                                                            i++) {
+                                                          if (cartList[i]
+                                                                  .productName ==
+                                                              _pList[lowerIndex].productName) {
+                                                            cartItemIndex = i;
+                                                            quantity =
+                                                                cartList[i]
+                                                                    .quantity;
+                                                            isFound = true;
+                                                            break;
                                                           }
-                                                          if (_searchProductList[
-                                                                      upperIndex]
-                                                                  .products![
-                                                                      lowerIndex]
-                                                                  .status ==
-                                                              STATUS_PRODUCT_AVAILABLE) {
-                                                            if (!isFound) {
-                                                              if ((_searchProductList[
-                                                                          upperIndex]
-                                                                      .products![
-                                                                          lowerIndex]
-                                                                      .quantity)! >
-                                                                  0) {
-                                                                CartProduct cartProduct = CartProduct(
-                                                                    price: _searchProductList[
-                                                                            upperIndex]
-                                                                        .products![
-                                                                            lowerIndex]
-                                                                        .price,
-                                                                    productName: _searchProductList[
-                                                                            upperIndex]
-                                                                        .products![
-                                                                            lowerIndex]
-                                                                        .productName,
-                                                                    discount: _searchProductList[
-                                                                            upperIndex]
-                                                                        .products![
-                                                                            lowerIndex]
-                                                                        .discount,
-                                                                    discountedPrice: _searchProductList[
-                                                                            upperIndex]
-                                                                        .products![
-                                                                            lowerIndex]
-                                                                        .discountedPrice,
-                                                                    imagePaths: _searchProductList[
-                                                                            upperIndex]
-                                                                        .products![
-                                                                            lowerIndex]
-                                                                        .imagePaths,
-                                                                    updatedStock: _searchProductList[
-                                                                            upperIndex]
-                                                                        .products![
-                                                                            lowerIndex]
-                                                                        .quantity,
-                                                                    quantity:
-                                                                        1);
-                                                                HiveServices
-                                                                    .setCategory(
-                                                                        _currentCategory!,
-                                                                        items);
-                                                                HiveServices.addProduct(
-                                                                    cartProduct,
-                                                                    _currentCategory!,
-                                                                    items);
-                                                                HiveServices
-                                                                    .addCategory(
-                                                                        _currentCategory!,
-                                                                        items);
-                                                                getCartTray();
-                                                              } else {
-                                                                displaySnackMessage(
-                                                                    "Product is out of stock");
-                                                              }
+                                                        }
+                                                        if (_pList[lowerIndex].status != STATUS_PRODUCT_UNAVAILABLE) {
+                                                          if (!isFound) {
+                                                            if ((_pList[lowerIndex].quantity)! >
+                                                                0) {
+                                                              CartProduct cartProduct = CartProduct(
+                                                                  price: _pList[lowerIndex].price,
+                                                                  productName: _pList[lowerIndex].productName,
+                                                                  discount: _pList[lowerIndex].discount,
+                                                                  discountedPrice: _pList[lowerIndex].discountedPrice,
+                                                                  imagePaths: _pList[lowerIndex].imagePaths,
+                                                                  updatedStock: _pList[lowerIndex].quantity,
+                                                                  quantity: 1);
+                                                              HiveServices
+                                                                  .setCategory(
+                                                                      _currentCategory!,
+                                                                      items);
+                                                              HiveServices.addProduct(
+                                                                  cartProduct,
+                                                                  _currentCategory!,
+                                                                  items);
+                                                              HiveServices
+                                                                  .addCategory(
+                                                                      _currentCategory!,
+                                                                      items);
+                                                              getCartTray();
                                                             } else {
-                                                              if (quantity! <
-                                                                  (_searchProductList[
-                                                                          upperIndex]
-                                                                      .products![
-                                                                          lowerIndex]
-                                                                      .quantity)!) {
-                                                                HiveServices
-                                                                    .addQuantity(
-                                                                        cartItemIndex!,
-                                                                        items);
-                                                                HiveServices
-                                                                    .setCategory(
-                                                                        _currentCategory!,
-                                                                        items);
-                                                                HiveServices
-                                                                    .addCategory(
-                                                                        _currentCategory!,
-                                                                        items);
-                                                                getCartTray();
-                                                              } else {
-                                                                displaySnackMessage(
-                                                                    "You can't add more");
-                                                              }
+                                                              displaySnackMessage(
+                                                                  "Product is out of stock");
                                                             }
                                                           } else {
-                                                            displaySnackMessage(
-                                                                "You Can't Add Unavailable Product");
+                                                            if (quantity! <
+                                                                (_pList[lowerIndex].quantity)!) {
+                                                              HiveServices
+                                                                  .addQuantity(
+                                                                      cartItemIndex!,
+                                                                      items);
+                                                              HiveServices
+                                                                  .setCategory(
+                                                                      _currentCategory!,
+                                                                      items);
+                                                              HiveServices
+                                                                  .addCategory(
+                                                                      _currentCategory!,
+                                                                      items);
+                                                              getCartTray();
+                                                            } else {
+                                                              displaySnackMessage(
+                                                                  "You can't add more");
+                                                            }
                                                           }
-                                                          setState(() {
-                                                            expansion = true;
-                                                          });
-                                                        },
-                                                        addQuantity: () {
-                                                          int? cartItemIndex;
-                                                          for (int i = 0;
-                                                              i <
-                                                                  items
-                                                                      .getAt(0)!
-                                                                      .cartData!
-                                                                      .length;
-                                                              i++) {
-                                                            if (items
+                                                        } else {
+                                                          displaySnackMessage(
+                                                              "You Can't Add Unavailable Product");
+                                                        }
+                                                        setState(() {
+                                                          expansion = true;
+                                                        });
+                                                      },
+                                                      addQuantity: () {
+                                                        int? cartItemIndex;
+                                                        for (int i = 0;
+                                                            i <
+                                                                items
                                                                     .getAt(0)!
-                                                                    .cartData![
-                                                                        i]
-                                                                    .productName ==
-                                                                _searchProductList[
-                                                                        upperIndex]
-                                                                    .products![
-                                                                        lowerIndex]
-                                                                    .productName) {
-                                                              cartItemIndex = i;
-                                                              break;
-                                                            }
-                                                          }
-                                                          if ((items
+                                                                    .cartData!
+                                                                    .length;
+                                                            i++) {
+                                                          if (items
                                                                   .getAt(0)!
-                                                                  .cartData?[
-                                                                      cartItemIndex!]
-                                                                  .quantity)! <
-                                                              (items
-                                                                  .getAt(0)!
-                                                                  .cartData?[
-                                                                      cartItemIndex!]
-                                                                  .updatedStock)!) {
-                                                            HiveServices
-                                                                .addQuantity(
-                                                                    cartItemIndex!,
-                                                                    items);
-                                                            getCartTray();
-                                                          } else {
-                                                            displaySnackMessage(
-                                                                "You can't add more");
+                                                                  .cartData![i]
+                                                                  .productName ==
+                                                              _pList[lowerIndex].productName) {
+                                                            cartItemIndex = i;
+                                                            break;
                                                           }
-                                                        },
-                                                        subtract: () {
-                                                          int? cartItemIndex;
-                                                          for (int i = 0;
-                                                              i <
-                                                                  items
-                                                                      .getAt(0)!
-                                                                      .cartData!
-                                                                      .length;
-                                                              i++) {
-                                                            if (items
+                                                        }
+                                                        if ((items
+                                                                .getAt(0)!
+                                                                .cartData?[
+                                                                    cartItemIndex!]
+                                                                .quantity)! <
+                                                            (items
+                                                                .getAt(0)!
+                                                                .cartData?[
+                                                                    cartItemIndex!]
+                                                                .updatedStock)!) {
+                                                          HiveServices
+                                                              .addQuantity(
+                                                                  cartItemIndex!,
+                                                                  items);
+                                                          getCartTray();
+                                                        } else {
+                                                          displaySnackMessage(
+                                                              "You can't add more");
+                                                        }
+                                                      },
+                                                      subtract: () {
+                                                        int? cartItemIndex;
+                                                        for (int i = 0;
+                                                            i <
+                                                                items
                                                                     .getAt(0)!
-                                                                    .cartData![
-                                                                        i]
-                                                                    .productName ==
-                                                                _searchProductList[
-                                                                        upperIndex]
-                                                                    .products![
-                                                                        lowerIndex]
-                                                                    .productName) {
-                                                              cartItemIndex = i;
-                                                              break;
-                                                            }
-                                                          }
-                                                          if ((items
+                                                                    .cartData!
+                                                                    .length;
+                                                            i++) {
+                                                          if (items
                                                                   .getAt(0)!
-                                                                  .cartData?[
-                                                                      cartItemIndex!]
-                                                                  .quantity)! <
-                                                              (items
-                                                                  .getAt(0)!
-                                                                  .cartData?[
-                                                                      cartItemIndex!]
-                                                                  .updatedStock)!) {
-                                                            HiveServices
-                                                                .setCategory(
-                                                                    _currentCategory!,
-                                                                    items);
-                                                            HiveServices
-                                                                .subtractQuantity(
-                                                                    cartItemIndex!,
-                                                                    _currentCategory!,
-                                                                    items);
-                                                          } else {
-                                                            displaySnackMessage(
-                                                                "You can't add more");
+                                                                  .cartData![i]
+                                                                  .productName ==
+                                                              _pList[lowerIndex].productName) {
+                                                            cartItemIndex = i;
+                                                            break;
                                                           }
-                                                        },
-                                                      ),
+                                                        }
+                                                        if ((items
+                                                                .getAt(0)!
+                                                                .cartData?[
+                                                                    cartItemIndex!]
+                                                                .quantity)! <
+                                                            (items
+                                                                .getAt(0)!
+                                                                .cartData?[
+                                                                    cartItemIndex!]
+                                                                .updatedStock)!) {
+                                                          HiveServices.setCategory(
+                                                              _currentCategory!,
+                                                              items);
+                                                          HiveServices
+                                                              .subtractQuantity(
+                                                                  cartItemIndex!,
+                                                                  _currentCategory!,
+                                                                  items);
+                                                        } else {
+                                                          displaySnackMessage(
+                                                              "You can't add more");
+                                                        }
+                                                      },
                                                     );
                                                   });
                                             }),

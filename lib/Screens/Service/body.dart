@@ -245,7 +245,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
         AbsorbPointer(
           absorbing: processing,
           child: Opacity(
-            opacity: processing? 0.3 :1.0,
+            opacity: processing ? 0.3 : 1.0,
             child: Stack(
               alignment: Alignment.topCenter,
               children: [
@@ -267,18 +267,19 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                     borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(20),
                         bottomRight: Radius.circular(20)),
-                    child: (widget.business?.businessInfo?.listImagePath != null &&
-                            (widget.business?.businessInfo?.listImagePath
-                                ?.isNotEmpty)!)
-                        ? CachedNetworkImage(
-                            imageUrl:
-                                "${env.config?.imageUrl}${(widget.business!.businessInfo!.listImagePath![0])}",
-                            fit: BoxFit.fill,
-                          )
-                        : Image.asset(
-                            "assets/Images/background_pic_image",
-                            fit: BoxFit.fill,
-                          ),
+                    child:
+                        (widget.business?.businessInfo?.listImagePath != null &&
+                                (widget.business?.businessInfo?.listImagePath
+                                    ?.isNotEmpty)!)
+                            ? CachedNetworkImage(
+                                imageUrl:
+                                    "${env.config?.imageUrl}${(widget.business!.businessInfo!.listImagePath![0])}",
+                                fit: BoxFit.fill,
+                              )
+                            : Image.asset(
+                                "assets/Images/background_pic_image",
+                                fit: BoxFit.fill,
+                              ),
                   ),
                 ),
                 Positioned(
@@ -334,7 +335,9 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                           business: widget.business,
                         )),
                     !_isSearching
-                        ? SizedBox(height: getProportionateScreenHeight(10))
+                        ? SizedBox(
+                            height: getProportionateScreenHeight(10)
+                          )
                         : SizedBox(
                             width: 0.0,
                             height: 0.0,
@@ -351,7 +354,8 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                                       width: 20.0,
                                     ),
                                     SizedBox(
-                                      height: getProportionateScreenHeight(20.0),
+                                      height:
+                                          getProportionateScreenHeight(20.0),
                                     ),
                                     Text(
                                       "This category have no products yet",
@@ -397,15 +401,19 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                                       crossAxisSpacing: 10,
                                     ),
                                     itemCount: _serviceList.length,
-                                    itemBuilder: (BuildContext context, int index) {
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
                                       return ServiceItemsList(
                                         onTap: () {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => ServiceDetails(
-                                                  service: _serviceList[index],
-                                                  business: widget.business),
+                                              builder: (context) =>
+                                                  ServiceDetails(
+                                                      service:
+                                                          _serviceList[index],
+                                                      business:
+                                                          widget.business),
                                             ),
                                           );
                                         },
@@ -435,7 +443,8 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                                       width: 20.0,
                                     ),
                                     SizedBox(
-                                      height: getProportionateScreenHeight(20.0),
+                                      height:
+                                          getProportionateScreenHeight(20.0),
                                     ),
                                     Text(
                                       "This category have no products yet",
@@ -473,7 +482,8 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                                     crossAxisSpacing: 10,
                                   ),
                                   itemCount: _searchServiceList.length,
-                                  itemBuilder: (BuildContext context, int index) {
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
                                     return ServiceItemsList(
                                       service: _searchServiceList[index],
                                       refresh: () {
@@ -489,9 +499,11 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => ServiceDetails(
-                                                service: _searchServiceList[index],
-                                                business: widget.business),
+                                            builder: (context) =>
+                                                ServiceDetails(
+                                                    service: _searchServiceList[
+                                                        index],
+                                                    business: widget.business),
                                           ),
                                         );
                                       },
