@@ -83,7 +83,6 @@ class _CustomCardState extends State<CustomCard> {
     return isClosed;
   }
 
-
 //check validity according to current object
   bool checkDateValidity(List<TimeObj>? list) {
     bool isClosed =true;

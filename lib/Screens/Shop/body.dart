@@ -366,32 +366,6 @@ class _BodyState extends State<Body> with TickerProviderStateMixin {
     });
   }
 
-/*  void expandedCall() {
-    setState(() {
-      isExpanded = true;
-    });
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 10),
-        curve: Curves.easeOut,
-      );
-    });
-  }
-
-  void contractedCall() {
-    setState(() {
-      isExpanded = false;
-    });
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 10),
-        curve: Curves.easeOut,
-      );
-    });
-  }*/
-
   //print snack message
   displaySnackMessage(String message) {
     if (mounted) {

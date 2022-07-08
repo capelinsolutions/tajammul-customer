@@ -40,7 +40,6 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
 
   @override
   void initState() {
-    // TODO: implement initState
     dataBox = Hive.box<HiveProduct>('cart');
     _controller =
         AnimationController(vsync: this, duration: Duration(milliseconds: 200));
@@ -87,6 +86,9 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
     setState(() {
       _processing = true;
     });
+    print(categories);
+    print('ahad');
+    print(cartProduct);
     Users user = Provider.of<UserProvider>(context, listen: false).users;
     Map<String, String>? result = await ApiCalls.createOrder(
         categories,

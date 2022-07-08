@@ -773,60 +773,6 @@ class ApiCalls {
     }
   }
 
-  //get all business for user
-  static Future<Map<String, String>?> getAllBusiness() async {
-    print(graphQLConfiguration.getGraphQLUrl());
-
-    await graphQLConfiguration.setHeaders();
-
-    client = graphQLConfiguration.clientToQuery();
-    try {
-      QueryResult result = await client.query(
-        QueryOptions(
-          document: gql(Queries.getAllBusiness),
-        ),
-      );
-
-      if (result.hasException) {
-        if (result.exception?.linkException?.originalException != null) {
-          Map<String, String> error = {
-            "error": "Something went wrong please try again"
-          };
-          return error;
-        }
-        if (result.exception?.linkException is ServerException) {
-          HttpLinkServerException exception =
-              result.exception?.linkException as HttpLinkServerException;
-          if (exception.response.statusCode == 401) {
-            Map<String, String> error = {"error": "Session Expired"};
-            return error;
-          }
-        }
-        if (result.exception?.graphqlErrors.isNotEmpty ?? false) {
-          print(
-              "${result.exception?.graphqlErrors[0].message} : ${result.exception?.graphqlErrors[0].extensions?["statusCode"]}");
-          Map<String, String> error = {
-            "error": result.exception!.graphqlErrors[0].message
-          };
-          return error;
-        }
-      }
-      if (result.data?['getAllBusiness'] != null) {
-        Map<String, String> success = {
-          "success": jsonEncode(result.data?['getAllBusiness']["data"])
-        };
-        return success;
-      }
-    } catch (e) {
-      print(e.toString());
-      Map<String, String> error = {
-        "error": "Something went wrong please try again"
-      };
-      return error;
-    }
-    return null;
-  }
-
   //get all searches of shops in business
   static Future<Map<String, String>?> getBusinessByName(
       String businessName, int pageNo, int noOfElements) async {
@@ -878,65 +824,6 @@ class ApiCalls {
         "success":  jsonEncode(result.data?['getBusinessByName']["data"]),
       };
       return success;
-    }
-    return null;
-  }
-
-  //get all services for user
-  static Future<Map<String, String>?> getAllServices(int pageNo, int noOfElements) async {
-    print(graphQLConfiguration.getGraphQLUrl());
-
-    await graphQLConfiguration.setHeaders();
-
-    client = graphQLConfiguration.clientToQuery();
-    try {
-      QueryResult result = await client.query(
-        QueryOptions(
-          document: gql(Queries.getAllServices),
-          variables: {
-            "pageNo": pageNo,
-            "noOfElements": noOfElements
-          },
-          //pollInterval: Duration(milliseconds: 100)
-        ),
-      );
-
-      if (result.hasException) {
-        if (result.exception?.linkException?.originalException != null) {
-          Map<String, String> error = {
-            "error": "Something went wrong please try again"
-          };
-          return error;
-        }
-        if (result.exception?.linkException is ServerException) {
-          HttpLinkServerException exception =
-          result.exception?.linkException as HttpLinkServerException;
-          if (exception.response.statusCode == 401) {
-            Map<String, String> error = {"error": "Session Expired"};
-            return error;
-          }
-        }
-        if (result.exception?.graphqlErrors.isNotEmpty ?? false) {
-          print(
-              "${result.exception?.graphqlErrors[0].message} : ${result.exception?.graphqlErrors[0].extensions?["statusCode"]}");
-          Map<String, String> error = {
-            "error": result.exception!.graphqlErrors[0].message
-          };
-          return error;
-        }
-      }
-      if (result.data?['getAllBusinessWhoOfferServices'] != null) {
-        Map<String, String> success = {
-          "success": jsonEncode(result.data?['getAllBusinessWhoOfferServices']["data"]),
-        };
-        return success;
-      }
-    } catch (e) {
-      print(e.toString());
-      Map<String, String> error = {
-        "error": "Something went wrong please try again"
-      };
-      return error;
     }
     return null;
   }

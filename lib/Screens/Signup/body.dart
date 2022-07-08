@@ -429,8 +429,7 @@ class _BodyState extends State<Body> {
                                                     onPressed: () async {
                                                       if (formKey.currentState!.validate()) {
                                                         formKey.currentState!.save();
-                                                        Map<String, String>
-                                                        signUpUser = {
+                                                        Map<String, String> signUpUser = {
                                                           "username": _username.text,
                                                           "email": _email.text,
                                                           "password": _userPasswordController.text,

@@ -86,7 +86,6 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin{
     });
   }
 
-
   final List<Widget> _screens = <Widget>[
     ShopScreen(),
     ServiceScreen()

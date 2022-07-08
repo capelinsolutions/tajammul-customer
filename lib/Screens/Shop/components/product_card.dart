@@ -30,23 +30,8 @@ class _ProductCardState extends State<ProductCard> {
   @override
   void initState() {
     dataBox = Hive.box<HiveProduct>('cart');
-
-
     super.initState();
   }
-
-/*  getQuantity(Product product){
-    int? quantity =0;
-    HiveProduct? hp;
-    hp=dataBox?.getAt(0);
-    for(var i in hp!.cartData!){
-      if(i.productName == product.productName){
-        quantity = i.quantity;
-        break;
-      }
-    }
-    return quantity;
-  }*/
 
   @override
   Widget build(BuildContext context) {

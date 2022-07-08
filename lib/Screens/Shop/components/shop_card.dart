@@ -76,7 +76,6 @@ class _ShopCardState extends State<ShopCard> {
     return isClosed;
   }
 
-
 //check validity according to current object
   bool checkDateValidity(List<TimeObj>? list) {
     bool isClosed =true;
@@ -98,6 +97,7 @@ class _ShopCardState extends State<ShopCard> {
     }
     return isClosed;
   }
+
   @override
   Widget build(BuildContext context) {
     return Card(

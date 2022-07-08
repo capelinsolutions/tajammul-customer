@@ -74,7 +74,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
     super.initState();
   }
 
-  //check which business user is login
+  //check which user is login
   checkUser() async {
     _usernameController.text = user?.userName ?? "";
     _emailController.text = user?.email ?? "";

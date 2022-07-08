@@ -285,24 +285,6 @@ mutation createUser(\$userData: UserInput){
       }
     }""";
 
-  //search by category
-  static String searchByCategory = """
-  query searchByCategory(\$categoryName: String!) {
-       searchByCategory(categoryName:\$categoryName) {
-       data 
-       }
-  }
-  """;
-
-  //search by product
-  static String searchByProduct = """
-  query searchByProduct(\$productName: String!) {
-       searchByProduct(productName:\$productName) {
-       data 
-       }
-  }
-  """;
-
   //get product by category by business
   static String getProductsByCategoryInBusiness = """
   query getProductsByCategoryInBusiness(\$businessId: String!, \$categoryName: String!, \$pageNo: Int!, \$noOfElements: Int!){
@@ -417,92 +399,6 @@ mutation createUser(\$userData: UserInput){
   }
   """;
 
-  //get all products in business
-  static String getAllProductsInBusiness = """
-  query getAllProductsInBusiness(\$businessId: String!){
-       getAllProductsInBusiness(businessId:\$businessId){
-       data {
-      products {
-        productName
-        imagePaths
-        listImagePath
-        quantity
-      }
-    }
-  }
-  }
-  """;
-
-  static String getAllBusiness = """
-    query getAllBusiness{
-  getAllBusiness{
-    data{
-    businessId
-    businessDetails{
-        inventoryList{
-          products{
-            imagePaths
-          }
-        }
-      }
-      isOpened
-    timings {
-      timings {
-       monday {
-        startTime
-        endTime
-      }
-      tuesday {
-        startTime
-        endTime
-      }
-      wednesday { 
-        startTime
-        endTime
-      }
-      thursday {
-        startTime
-        endTime
-      }
-      friday {
-        startTime
-        endTime
-      }
-      saturday {
-        startTime
-        endTime
-      }
-      sunday {
-        startTime
-        endTime
-      }
-      }
-     }
-      businessInfo{
-       name
-       imagePath
-       listImagePath
-       address{
-        street
-        postalCode
-        additionalAddress
-        formatedAddress
-        addressName
-        residence
-        area
-        city
-        province
-        country
-        latitude
-        longitude
-        addressType
-       }
-      }
-    }
-  }
-}
-  """;
-
   //get all shops search in business
   static String getBusinessByName = """
     query getBusinessByName(\$businessName: String!,\$pageNo: Int!,\$noOfElements: Int!){
@@ -514,77 +410,6 @@ mutation createUser(\$userData: UserInput){
           products{
             imagePaths
           }
-        }
-      }
-      isOpened
-    timings {
-      timings {
-       monday {
-        startTime
-        endTime
-      }
-      tuesday {
-        startTime
-        endTime
-      }
-      wednesday { 
-        startTime
-        endTime
-      }
-      thursday {
-        startTime
-        endTime
-      }
-      friday {
-        startTime
-        endTime
-      }
-      saturday {
-        startTime
-        endTime
-      }
-      sunday {
-        startTime
-        endTime
-      }
-      }
-     }
-      businessInfo{
-       name
-       imagePath
-       listImagePath
-       address{
-        street
-        postalCode
-        additionalAddress
-        formatedAddress
-        addressName
-        residence
-        area
-        city
-        province
-        country
-        latitude
-        longitude
-        addressType
-       }
-      }
-    }
-  }
-}
-  """;
-
-  //get all shops who offer services
-  static String getAllServices = """
-    query getAllBusinessWhoOfferServices(\$pageNo: Int!,\$noOfElements: Int!){
-  getAllBusinessWhoOfferServices(pageNo: \$pageNo,noOfElements: \$noOfElements){
-    data{
-    businessId
-    businessDetails{
-        servicesList{
-        serviceName
-        imagePaths
-        description
         }
       }
       isOpened
